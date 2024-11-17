@@ -1,0 +1,474 @@
+﻿<!-- Bootstrap core CSS -->
+
+<link href="../Style%20Library/CustomStyleLibraries/jquery-ui-datepicker/jquery-ui.min.css?v=1.0" rel="stylesheet">
+<link href="../Style%20Library/CustomStyleLibraries/bootstrap-3.3.7-dist/css/bootstrap.min.css?v=1.0" rel="stylesheet">
+<link href="../Style%20Library/CustomStyleLibraries/datatable/dataTables.bootstrap4.css?v=1.0" rel="stylesheet" />
+<link href="../Style%20Library/CustomStyleLibraries/datatable/dataTables.responsive.css?v=1.0" rel="stylesheet" />
+<link href="../Style%20Library/CustomStyleLibraries/datatable/dataTables.bootstrap4.min.css?v=1.0" rel="stylesheet" />
+
+<link href="../Style%20Library/CustomStyleLibraries/chosen_v1.8.7/chosen.min.css?v=1.0" rel="stylesheet">
+
+<script src="../Style%20Library/CustomStyleLibraries/jquery-ui-datepicker/jquery-ui.min.js?v=1.0"></script>
+
+<script src="../Style%20Library/CustomStyleLibraries/bootstrap-3.3.7-dist/js/bootstrap.min.js?v=1.0"></script>
+<script src="../Style%20Library/CustomStyleLibraries/datatable/jquery.dataTables.min.js?v=1.0"></script>
+<script src="../Style%20Library/CustomStyleLibraries/datatable/dataTables.bootstrap.min.js?v=1.0"></script>
+<script src="../Style%20Library/CustomStyleLibraries/datatable/dataTables.responsive.js?v=1.0"></script>
+
+<script src="../Style%20Library/CustomStyleLibraries/chosen_v1.8.7/chosen.jquery.min.js?v=1.0"></script>
+
+<div style="margin-top: 0px;">
+
+    <div class="row">
+        <div class="col-md-12 ">
+            <div class="pull-right">
+                <!--<div class="btn-group"><button type="button" class="btn btn-primary pull-right" id="btnAddProduct" onclick="openProductDetails(0,'new')"><i class="glyphicon glyphicon-plus"></i> Add New Product</button></div>-->
+                <div class="btn-group"><a class="btn btn-primary pull-right" id="btnAddShowCause" style="display:none;" href="ShowCaseDashboard.aspx"><i class="glyphicon glyphicon-plus"></i> Add Showcause Notice</a></div>
+            </div>
+        </div>
+    </div>
+
+    <!--<div class="panel panel-default">
+        <div class="panel-body">-->
+
+
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-md-12">
+
+            <table id="tblShowCauses" class="table table-striped" style="width: 100%">
+                <thead class="alert alert-info h5">
+
+                    <tr>
+
+                        <th class="th-sm" data-column='0'> <input type='text' class='column_filter form-control' onkeyup='SearchCol(0)' autocomplete="off" /></th>
+                        <th class="th-sm" data-column='1'> <input type='text' class='column_filter form-control' onkeyup='SearchCol(1)' autocomplete="off" /></th>
+                        <th class="th-sm" data-column='2'> <input type='text' class='column_filter form-control' onkeyup='SearchCol(2)' autocomplete="off" /></th>
+                        <th class="th-sm" data-column='3'> </th>
+
+                    </tr>
+                    <tr>
+                        <th class=" th-sm">
+                            Case Category
+                        </th>
+                        <th style="text-align: left" class="th-sm">
+                            Case No
+                        </th>
+                        <th class="th-sm">
+                            Inspector Name
+                        </th>
+
+                        <th class="th-sm" align='center' style="text-align:center;">
+                            Action
+                        </th>
+                    </tr>
+
+                </thead>
+
+                <tbody></tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+
+    <!--</div>
+    </div>-->
+
+</div>
+
+
+<!-- Start Delete Reason Modal -->
+<div class="modal fade" id="divModal-DeleteReason" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document" style="width:750px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" id="mod_mesga">&times;</span>
+                </button>
+                <h2 class="modal-title">Delete Showcause Notice</h2>
+                <h4 id="h4CaseNo">Case Title</h4>
+                <input type="hidden" id="hid_ProductId_DeleteReason" />
+            </div>
+            <div class="modal-body">
+
+                <div>
+
+                    <div class="row">
+                        <div class="col-md-2">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <div class="form-label-group">
+                                    <label>Reason For Deletion<i class="text-danger">*</i></label>
+                                    <textarea id="txtReasonForDeletion" class="form-control" rows="6" cols="20"></textarea>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                        </div>
+                    </div>
+
+               </div>
+
+
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="btnSaveDeleteReason" class="btn btn-danger" onclick="deleteRecord()"><i class="glyphicon glyphicon-trash"></i> Delete</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Delete Reason Modal -->
+
+<script type="text/javascript">
+    document.getElementById("pageContentTitle").innerHTML = "Showcause Notices";
+
+    $(document).ready(function () {
+
+
+        //$(".ms-listviewtable").find('thead th').addClass("alert alert-info h5 ");
+        //$(".ms-listviewtable").addClass('table table-bordered');
+
+        
+        if (havePremission(Permission.UPLOAD, Module.ShowCause) == true) {
+            $("#btnAddShowCause,#btnSaveDeleteReason").show();
+        }
+
+        $(".chosen").chosen();
+
+        
+        bindShowcauseTable(0);
+
+
+
+        $('.datepicker').datepicker({
+            onSelect: function (dateText, datepickerObj) {
+                console.log("Selected date: " + dateText + "; input's current value: " + this.value, datepickerObj);
+            }
+        });
+
+    });
+
+
+    function bindShowcauseTable(_id) {
+        // Specify the Id of the Item that you want to fetch
+
+        if ($('#tblShowCauses').hasClass("dataTable") == true) {
+            $('#tblShowCauses').DataTable().destroy();
+        }
+        $('#tblShowCauses>tbody').html('');
+
+
+        var idFilter = "IsDeleted eq 0"; //"IsActive eq 1";
+        if (Number(_id) > 0) {
+            idFilter = "ID eq " + _id;
+        }
+
+
+        var filterShowCause = idFilter + "&$top=5000&$select=Id,Title,CaseNo,InspectorName,Designation,ContactNumber,RegionProvince,OfficialAddress,LocationOfInspection," +
+            "CaseCategoryLookup/Id,CaseCategoryLookup/Title" +
+            "&$expand=CaseCategoryLookup&$orderby=Modified desc";
+
+        GetSPListItems("ShowCauseCases", 0, filterShowCause)
+            .done(function (data) {
+
+                var response = data.d.results;
+                for (var i = 0; i < response.length ; i++) {
+
+                    var _item = response[i];
+                    var _canViewThisRecord = true; // false;
+                    /*
+                    
+                    if (_item["Status"] == "Draft" ||
+                        _item["Status"] == "On Hold" ||
+                        _item["Status"] == "Send Back") {
+
+                        if (havePremission(Permission.UPLOAD, Module.ProductManagement, _item["CountryLookup"].Id) == true) {
+
+                            _canViewThisRecord = true;
+                        }
+                    }
+
+                    else if (_item["Status"] == "Send For Approval") {
+
+                        if (havePremission(Permission.Approve, Module.ProductManagement, _item["CountryLookup"].Id) == true ||
+                            havePremission(Permission.UPLOAD, Module.ProductManagement, _item["CountryLookup"].Id) == true) {
+
+                            _canViewThisRecord = true;
+                        }
+                    }
+
+                    else if (_item["Status"] == "Approved") {
+
+                        //if (havePremission(Permission.VIEW, Module.ProductManagement, _item["CountryLookupId"]) == true) {
+                        if (haveAccessTo(Module.ProductManagement, _item["CountryLookup"].Id) == true) {
+
+                            _canViewThisRecord = true;
+                        }
+                    }
+                    */
+
+                    if (_canViewThisRecord == true) {
+
+                        /*var _statusText = 'In-Active';
+
+                        if (_item.IsActive)
+                            _statusText = (_item.IsActive == true ? 'Active' : 'In-Active');
+                            */
+
+                        /*var stageTxt = _item["Stage"];
+                        if (stageTxt == "Renewal" && _item.RenewalType.length > 0) {
+                            stageTxt = stageTxt + " (" + _item.RenewalType + ")";
+                        }
+                        var statusText = _item["Status"];
+                        if (statusText == 'Draft' || statusText == 'On Hold' || statusText == 'Send Back') {
+                            statusText = statusText + "-draft-";
+                        }*/
+
+                        var newRow = "<tr id='" + _item["Id"] + "'>" +
+                            "<td>" + ((_item["CaseCategoryLookup"]) ? _item["CaseCategoryLookup"].Title : "") + "</td>" +
+                            "<td>" + _item["CaseNo"] + "</td>" +
+                            "<td>" + ((_item["InspectorName"]) ? _item["InspectorName"] : "") + "</td>";
+
+                        var _actionButtonHTML = createActionDropdown(_item);
+
+                        newRow = newRow + "<td align='center' style='text-align:center;'>" + _actionButtonHTML + "</td>";
+                        newRow = newRow + "</tr>";
+
+                        $('#tblShowCauses>tbody').append(newRow);
+
+                    }
+                }
+
+                $('#tblShowCauses').on('draw.dt', function () {
+                    $(".dataTables_filter").find('input').addClass('form-control input-sm');
+                    $(".dataTables_filter").addClass('hide');
+
+                });
+                $("#tblShowCauses").DataTable();
+
+
+                var preDefineFilter = GetQueryString('ftr');
+                if (preDefineFilter && preDefineFilter.length > 0) {
+                    
+                    switch (preDefineFilter.toLowerCase()) {
+                        case "draft":
+
+                            $("#selectFilterStage").val('');
+                            //$("#selectFilterStatus").val(['Draft', 'On Hold', 'Send Back']);
+                            $("#selectFilterStatus").val('-draft-');
+
+                            break;
+                        case "pending":
+                            $("#selectFilterStage").val('');
+                            $("#selectFilterStatus").val('-Send For Approval-');
+                            break;
+                        case "applied":
+                            $("#selectFilterStage").val('-Applied-');
+                            $("#selectFilterStatus").val('-Approved-');
+                            break;
+                        case "pre-registered":
+                            $("#selectFilterStage").val('-Pre-Registration-');
+                            $("#selectFilterStatus").val('-Approved-');
+                            break;
+                        case "registered":
+                            //$("#selectFilterStage").val(['Pre-Registration', 'Registered']);
+                            $("#selectFilterStage").val('-Registered-');
+                            $("#selectFilterStatus").val('-Approved-');
+                            break;
+                        case "prv":
+                            $("#selectFilterStage").val('-PRV-');
+                            $("#selectFilterStatus").val('-Approved-');
+                            break;
+                        case "renewal":
+                            $("#selectFilterStage").val('-Renewal-');
+                            $("#selectFilterStatus").val('-Approved-');
+                            break;
+                        default:
+                            $("#selectFilterStage").val('');
+                            $("#selectFilterStatus").val('');
+                            break;
+                    }
+
+
+                    $("#selectFilterStatus").trigger('change');
+
+                }
+            });
+
+    }
+
+    function createActionDropdown(_item) {
+
+        var buttonAttr = "";
+
+        var _actionBtnHtml = "<div class='btn-group'>";
+        _actionBtnHtml += "  <button type='button' class='btn btn-primary dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' " + buttonAttr + ">        ";
+        _actionBtnHtml += "    Action <span class='caret'></span>";
+        _actionBtnHtml += "  </button>";
+        _actionBtnHtml += "  <ul class='dropdown-menu dropdown-menu-right'>";
+
+
+        //_actionBtnHtml += "    <li class=''><a href='#' id='awf'  onclick='openProductDetails(" + _item.Id + ",\"view\")' ><i class='glyphicon glyphicon-list-alt'></i>&nbsp;View Details</a></li>";
+        
+        if (havePremission(Permission.VIEW, Module.ShowCause) == true) {
+            _actionBtnHtml += "    <li class=''><a href='ShowCaseDashboard.aspx?rid=" + _item.Id + "'  target='_blank'><i class='glyphicon glyphicon-list-alt'></i>&nbsp;View Details</a></li>";
+        }
+
+        if (havePremission(Permission.UPLOAD, Module.ShowCause) == true) {
+
+            _actionBtnHtml += "    <li class=''><a href='#' id='awf'  onclick='openDeleteRecord(" + _item.Id + ",\"" + _item["CaseNo"] + "\")' ><i class='glyphicon glyphicon-trash'></i>&nbsp;Delete</a></li>";
+            
+            /*
+            if (_item.Status == "Draft") {
+                _actionBtnHtml += "    <li class=''><a href='#' id='awf'  onclick='openProductDetails(" + _item.Id + ",\"edit\")' ><i class='glyphicon glyphicon-edit'></i>&nbsp;Edit Product</a></li>";
+                //_actionBtnHtml += "    <li class=''><a href='#' id='awf'  onclick='openProductPackSize(" + _item.Id + ")' ><i class='glyphicon glyphicon-th-list'></i>&nbsp;Pack Size</a></li>";
+            }
+            */
+            /*if (_item.Status.trim().toLowerCase() != 'Send for Approval'.trim().toLowerCase()) {
+                if (_item.Status.trim().toLowerCase() == "Draft" || _item.Status.trim().toLowerCase() == "On Hold".trim().toLowerCase()) {
+                    _actionBtnHtml += "    <li class=''><a href='#' id='awf'  onclick='openDeleteProduct(" + _item.Id + ",\"" + _item["Title"] + "\")' ><i class='glyphicon glyphicon-trash'></i>&nbsp;Delete</a></li>";
+                }
+                else if (currentUserCustomInfo.UserType == 'Admin') {
+        _actionBtnHtml += "    <li class=''><a href='#' id='awf'  onclick='openDeleteRecord(" + _item.Id + ",\"" + _item["CaseNo"] + "\")' ><i class='glyphicon glyphicon-trash'></i>&nbsp;Delete</a></li>";
+                }
+            }*/
+        }
+    
+        _actionBtnHtml += "  </ul>";
+        _actionBtnHtml += "</div>";
+
+
+
+        return _actionBtnHtml;
+    }
+
+
+    function SearchCol(_index) {
+        var tableSelector = '#tblShowCauses';
+        var table = $(tableSelector);
+        var datatable = $(tableSelector).DataTable();
+        /*
+        table.find('th input,th select').each(function () {
+            var index = $(this).parents('th').data("column");
+            var searchByValue = $(this).val();
+            var isExpression = false;
+
+            if (index > -1) {
+                datatable.column(index).search(searchByValue);
+            }
+        });*/
+        
+        table.find('.column_filter').each(function () {
+            var index = $(this).parents('th').data("column");
+            var searchByValue = $(this).val();
+            var isExpression = false;
+
+            if (jQuery.type(searchByValue) == "array") {
+                searchByValue = searchByValue.join('|');
+            }
+
+            if (index > -1) {
+                datatable.column(index).search(searchByValue);
+            }
+        });
+
+
+        datatable.draw();
+    }
+
+
+
+
+
+
+</script>
+
+<script type="text/javascript">
+
+    function openDeleteRecord(_recordID, _title) {
+        
+
+        if (_recordID && Number(_recordID) > 0) {
+
+            var modalWindow = $("#divModal-DeleteReason");
+
+
+            modalWindow.find("#h4CaseNo").html("Case No: <b>" + _title + "</b>");
+                        
+
+            // reset All controls
+            modalWindow.find("select,input[type='text'],input[type='hidden'],textarea").val('');
+            modalWindow.find(".is-invalid").removeClass("is-invalid");
+            modalWindow.find('#hid_ProductId_DeleteReason').val(_recordID);
+
+
+
+            modalWindow.modal('show');
+        }
+        
+    }
+    function deleteRecord() {
+
+        var modalWindow = $("#divModal-DeleteReason");
+        var _productId = modalWindow.find("#hid_ProductId_DeleteReason").val();
+        var isValid = true;
+
+        modalWindow.find('.is-invalid').removeClass("is-invalid");
+
+        if ((modalWindow.find("#txtReasonForDeletion").val().trim().length > 0) == false) {
+            isValid = false;
+            modalWindow.find("#txtReasonForDeletion").addClass("is-invalid");
+        }
+
+
+        if (isValid == true && Number(_productId) > 0) {
+            
+
+            var _confirmResult = confirm("Are you sure you want to delete this showcause notice?");
+            if (_confirmResult == true) {
+
+                RequestStarted();
+
+                var jsonData = {
+                    IsDeleted: true,
+                    DeleteReason: modalWindow.find("#txtReasonForDeletion").val()
+                }
+
+                UpdateSPList("ShowCauseCases", _productId, jsonData).done(function (data) {
+
+                    alert('Showcause notice has been deleted successfully');
+                    // Retrive Nomenclatures newly Added
+                    bindShowcauseTable(0);
+
+
+
+                    //saveActionLog(_productId, modalWindow.find("#txtReasonForDeletion").val(), "Deleted", Module.ProductManagement);
+
+
+                    $("#divModal-DeleteReason").modal('hide');
+
+                    RequestEnded();
+
+                }).fail(function (jqXHR, textStatus) {
+
+                    alert("Showcause Deleting Fail! \n\nDetails\n" + jqXHR.responseJSON.error.message.value);
+                    RequestEnded();
+                });
+
+            }
+        }
+    }
+
+
+
+
+</script>
+
+
+

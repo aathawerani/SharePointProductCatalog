@@ -1,0 +1,2685 @@
+﻿<!-- Bootstrap core CSS -->
+
+<link href="../Style%20Library/CustomStyleLibraries/chosen_v1.8.7/chosen.min.css?v=1.0" rel="stylesheet">
+<link href="../Style%20Library/CustomStyleLibraries/jquery-ui-datepicker/jquery-ui.min.css?v=1.0" rel="stylesheet">
+<link href="../Style%20Library/CustomStyleLibraries/bootstrap-3.3.7-dist/css/bootstrap.min.css?v=1.0" rel="stylesheet">
+<link href="../Style%20Library/CustomStyleLibraries/datatable/dataTables.bootstrap4.css?v=1.0" rel="stylesheet" />
+<link href="../Style%20Library/CustomStyleLibraries/datatable/dataTables.responsive.css?v=1.0" rel="stylesheet" />
+<link href="../Style%20Library/CustomStyleLibraries/datatable/dataTables.bootstrap4.min.css?v=1.0" rel="stylesheet" />
+
+<script src="../Style%20Library/CustomStyleLibraries/jquery-ui-datepicker/jquery-ui.min.js?v=1.0"></script>
+
+<script src="../Style%20Library/CustomStyleLibraries/bootstrap-3.3.7-dist/js/bootstrap.min.js?v=1.0"></script>
+<script src="../Style%20Library/CustomStyleLibraries/datatable/jquery.dataTables.min.js?v=1.0"></script>
+<script src="../Style%20Library/CustomStyleLibraries/datatable/dataTables.bootstrap.min.js?v=1.0"></script>
+<script src="../Style%20Library/CustomStyleLibraries/datatable/dataTables.responsive.js?v=1.0"></script>
+
+<script src="../Style%20Library/CustomStyleLibraries/chosen_v1.8.7/chosen.jquery.min.js?v=1.0"></script>
+
+<div style="margin-top: 0px;">
+
+    <div class="row">
+        <div class="col-md-12">
+            <button type="button" class="btn btn-primary pull-right" id="btnAddArtwork" style="display:none;" onclick="openArtworkDetails(0,'new')"><i class="glyphicon glyphicon-plus"></i> Create Artwork</button>
+        </div>
+    </div>
+
+    <!--<div class="panel panel-default">
+        <div class="panel-body">-->
+
+
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-md-12">
+
+            <table id="tblArtwork" class="table table-striped" style="width: 100%">
+
+
+                <thead class="alert alert-info h5">
+
+                    <tr>
+
+                        <th class="th-sm" data-column='0'> <input type='text' class='column_filter form-control artwork-id' onchange='SearchCol(0)' autocomplete="off" /></th>
+                        <th class="th-sm" data-column='1'> <input type='text' class='column_filter form-control' onkeyup='SearchCol(1)' autocomplete="off" /></th>
+                        <th class="th-sm" data-column='2'> <input type='text' class='column_filter form-control' onkeyup='SearchCol(2)' autocomplete="off" /></th>
+                        <th class="th-sm" data-column='3'> <input type='text' class='column_filter form-control' onkeyup='SearchCol(3)' autocomplete="off" /></th>
+                        <th class="th-sm" data-column='4'> <input type='text' class='column_filter form-control' onkeyup='SearchCol(4)' autocomplete="off" /></th>
+                        <th class="th-sm" data-column='5'> <input type='text' class='column_filter form-control' onkeyup='SearchCol(5)' autocomplete="off" /></th>
+                        <th class="th-sm" data-column='6'> <input type='text' class='column_filter form-control' onkeyup='SearchCol(6)' autocomplete="off" /></th>
+                        <th class="th-sm" data-column='7'>
+
+                            <select class='column_filter form-control' onchange='SearchCol(7)'>
+                                <option value="">All</option>
+                                <option value="On Hold">On Hold</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Approved">Approved</option>
+                                <option value="Rejected">Rejected</option>
+                                <option value="Send Back">Send Back</option>
+                            </select>
+                        </th>
+                        <th class="th-sm" data-column='8'> </th>
+
+                    </tr>
+                    <tr>
+                        <th class=" th-sm">
+                            Id
+                        </th>
+                        <th class=" th-sm">
+                            Modified
+                        </th>
+                        <th class=" th-sm">
+                            Product
+                        </th>
+                        <th class="th-sm">
+                            Country
+                        </th>
+                        <th style="text-align: left" class="th-sm">
+                            Generic
+                        </th>
+                        <th class="th-sm">
+                            Strength
+                        </th>
+                        <!--<th class="th-sm">
+                            Pack Size
+                        </th>-->
+                        <th class="th-sm">
+                            Dosage Form
+                        </th>
+                        <th class="th-sm">
+                            System Status
+                        </th>
+                        <th class="th-sm" align='center' style="text-align:center;">
+                            Action
+                        </th>
+                    </tr>
+
+                </thead>
+
+                <tbody></tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+
+    <!--</div>
+    </div>-->
+
+</div>
+
+<!-- TJI - 28.02.23 - Testing large file upload alternate mechanism -->
+<div class="div">
+    Test FILE UPLOAD
+    <input id="AttachmentUploadField" type="file" size="98" />
+    <input id="AttachAttachmentButton" class="button" onclick="fileUpload()" type="button" value="Upload" />
+</div>
+<div class="div">
+    <label id="lblResult" class="result"></label>
+</div>
+<!-- TJI - 28.02.23 - End of testing large file upload alternate mechanism -->
+<!-- Start Product Modal -->
+<div class="modal fade" id="divModal-ArtworkDetails" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" id="mod_mesga">&times;</span>
+                </button>
+                <h2 class="modal-title">Create Artwork </h2>
+            </div>
+            <div class="modal-body">
+                <input type='hidden' id='hid_ID' />
+
+                <div>
+
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="form-label-group">
+                                    <label>Company<i class="text-danger">*</i></label>
+                                    <select id="ddlCompany" class="form-control">
+                                        <option value="0">-- None --</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="form-label-group">
+                                    <label>Country<i class="text-danger">*</i></label>
+                                    <select id="ddlCountry" class="form-control" onchange="bindProductsDDL();"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="form-label-group">
+                                    <label>Product<i class="text-danger">*</i> </label>
+                                    <!--<select id="ddlProduct" class="form-control" onchange="ddlProductChange();">
+                                        <option value="">-- None --</option>
+                                    </select>-->
+
+                                    <input type="text" id="txtProduct" class="form-control" maxlength="255" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="form-label-group">
+                                    <label>Pack Size <i class="text-danger">*</i></label>
+                                    <input type="text" id="txtPackSize" class="form-control" maxlength="255" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="form-label-group">
+                                    <label>Dosage Form<i class="text-danger">*</i> </label>
+                                    <select id="ddlDosageType" class="form-control"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="form-label-group">
+                                    <label>Generic<i class="text-danger">*</i></label>
+                                    <input type="text" id="txtGeneric" class="form-control" maxlength="255" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="form-label-group">
+                                    <label>Strength<i class="text-danger">*</i></label>
+                                    <input type="text" id="txtStrength" class="form-control" maxlength="255" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 no-padding">
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="form-label-group">
+                                        <label>SITE <i class="text-danger">*</i></label>
+                                        <select id="ddlManufacturingSite" class="form-control tag-input" multiple="multiple"></select>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="col-md-4 no-padding">
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="form-label-group">
+                                        <label>Details<i class="text-danger hide">*</i></label>
+                                        <textarea id="txtDetails" class="form-control" cols="20" rows="4"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" id="btnSave" class="btn btn-info" onclick="saveArtwork('onhold');"><i class="glyphicon glyphicon-floppy-disk"></i> Save</button>
+                    <button type="button" id="btnSendForApproval" class="btn btn-success" onclick="saveArtwork('final');"><i class="glyphicon glyphicon-ok"></i> Finish</button>
+
+
+                    <div class="row" id="divAttachment">
+                        <div class="col-md-12">
+                            <hr />
+                            <h4 class="pull-left">Attachment</h4>
+                            <a id="btnAddAttachment" href="#" title="Add Attachment" onclick="openAddAttachment(0)" class="btn btn-info btn-sm pull-right h5"><i class="glyphicon glyphicon-plus"></i>&nbsp;Add Attachment</a>
+
+                            <a id="btnAddFolder" href="#" title="Add Folder" onclick="openFolderSPDialog()" class="btn btn-info btn-sm pull-right h5" style="margin-right: 8px;"><i class="glyphicon glyphicon-plus"></i>&nbsp;Add Folder</a>
+                        </div>
+                        <div class="col-md-12 text-left">
+
+                            <table id="tblAttachment" class="table table-striped small" style="width: 100%">
+                                <thead class="alert alert-info h5">
+
+                                    <tr>
+                                        <th class="th-sm">
+                                            #
+                                        </th>
+                                        <th class="th-sm">
+                                            Folder Name
+                                        </th>
+                                        <th class="th-sm">
+                                            File Name
+                                        </th>
+                                        <th class="th-sm">
+                                            Approval Date
+                                        </th>
+                                        <th class="th-sm" align='center' style='text-align:center;'>
+                                            Action
+                                        </th>
+                                    </tr>
+
+                                </thead>
+
+                                <tbody><tr><td colspan="6">No attachment attachted!</td></tr></tbody>
+
+                            </table>
+
+
+                        </div>
+                    </div>
+
+                    <div class="row" id="divActionLogs" style="display:none;">
+                        <div class="col-md-12  text-left">
+
+                            <hr class="no-margin" />
+
+                            <h4 class="pull-left">Action History</h4>
+
+                            <div>
+
+                                <table id="tblActionHistory" class="table table-striped small" style="width: 100%">
+                                    <thead class="alert alert-info h5">
+                                        <!--style="background-color: #336699; color: white"-->
+
+                                        <tr>
+                                            <th class="th-sm">
+                                                Action On
+                                            </th>
+                                            <th style="text-align: left" class="th-sm">
+                                                Action By
+                                            </th>
+                                            <th class="th-sm">
+                                                Action Taken
+                                            </th>
+                                            <th class="th-sm" style="width:57%;">
+                                                Comment
+                                            </th>
+                                        </tr>
+
+                                    </thead>
+
+                                    <tbody></tbody>
+
+                                </table>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Product Modal -->
+<!-- Start Attachment Modal -->
+<div class="modal fade" id="divModal-ArtworkAttachment" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" id="mod_mesga">&times;</span>
+                </button>
+                <h2 class="modal-title">Add Attachment</h2>
+            </div>
+            <div class="modal-body">
+                <input type='hidden' id='hid_ArtworkId' />
+
+                <div>
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="form-label-group">
+                                    <label>Folder<i class="text-danger hide">*</i></label>
+                                    <select id="ddlFolders" class="form-control"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="form-label-group">
+                                    <label>Approval Date<i class="text-danger">*</i></label>
+                                    <input type="text" id="txtApprovalDate" class="form-control datepicker" maxlength="15" autocomplete="off" />
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="form-label-group">
+                                    <label>File Attachment<i class="text-danger">*</i> </label>
+                                    <input type="file" id="fileAttachedFiles" class="form-control" multiple="multiple" onchange="fileAttachedFiles_onChange(this)" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <ol id="olSelectFiles" style="padding-left: 13px;"></ol>
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="btnSave" class="btn btn-success" onclick="saveAttachment();"><i class="glyphicon glyphicon-floppy-disk"></i> Save Attachment</button>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<!-- End Attachment Modal -->
+<!-- Modal View Document -->
+<div class="modal fade" id="divModal_ViewDocument" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" id="mod_mesga">&times;</span>
+                </button>
+                <button type="button" class="close" onclick="min_max(this)">
+                    <span><i class="glyphicon glyphicon-resize-horizontal"></i></span>
+                </button>
+                <h3 class="modal-title" id="h4NomenclatureTitle">File Title</h3>
+            </div>
+            <div class="modal-body">
+                <div id="divfrmpdf"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal View Document -->
+<!-- Modal -->
+<div class="modal fade" id="divModal-ShareDocument" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 750px;right: 63px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" id="mod_mesga">&times;</span>
+                </button>
+                <h2 class="modal-title">Share Document</h2>
+
+                <input type="hidden" id="hid_docid_shared" value="0" />
+
+            </div>
+            <div class="modal-body">
+                <table id="tbluser" class="table table-striped" cellspacing="0" width="100%">
+                    <thead class="alert alert-info h5">
+
+
+                        <tr>
+                            <th>
+                                <input type="checkbox" class="chkHeader" id="chkhead" onclick="checkAll(this);" />
+                            </th>
+
+                            <th class="th-sm">
+                                Name
+
+                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                            </th>
+                            <th class="th-sm">
+                                User Type
+                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                            </th>
+                            <th class="th-sm">
+                                Email
+                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                            </th>
+
+                            <th style="text-align: left" class="th-sm">
+                                Status
+                                <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody></tbody>
+
+
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-warning" onclick="SharedDocWithuser();">Share</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+
+    var _modalItem = null;
+    $(document).ready(function () {
+
+
+        $('.datepicker').not(".hasDatepicker").datepicker({
+            onSelect: function (dateText, datepickerObj) {
+                console.log("Selected date: " + dateText + "; input's current value: " + this.value, datepickerObj);
+            }
+        });
+
+        bindArtworkCompanyDDLs();
+
+
+        $(".tag-input").chosen({
+            width: "100%"
+        });
+
+        var product_ID = 0;
+        try {
+            product_ID = $("#hid_ID").val();
+        } catch (a) { }
+
+
+
+
+        if (havePremission(Permission.UPLOAD, Module.Artwork) == true) {
+            $("#btnAddArtwork").show();
+        }
+
+        bindArtworkTable(product_ID);
+
+        bindShareDocumentUsers();
+        //notificationMarkAsSeen();
+
+
+        $('.modal').on('hidden.bs.modal', function (e) {
+            //setTimeout(function () {
+            if ($(".modal:visible").length > 0) {
+                _modalItem = $(".modal:visible").last();
+                _modalItem.removeClass('fade');
+                _modalItem.modal('hide');
+            } else {
+                if (_modalItem && _modalItem.length > 0) {
+                    _modalItem.modal('show');
+                    _modalItem.addClass('fade');
+                    $(".modal-backdrop").addClass('fade');
+                    _modalItem = null;
+                }
+            }
+
+            if (_needtoReopenthisWindow != null) {
+                _needtoReopenthisWindow.modal('show');
+                _needtoReopenthisWindow = null;
+            }
+
+            //}, 100);
+        });
+
+    });
+
+
+    var tblArtworkDataTable = null;
+    function bindArtworkTable(_id) {
+        // Specify the Id of the Item that you want to fetch
+        console.error('got here 20');
+        if ($('#tblArtwork').hasClass("dataTable") == true) {
+            console.error('got here 20.1');
+            $('#tblArtwork').DataTable().destroy();
+            console.error('got here 20.2');
+        }
+        console.error('got here 21');
+        $('#tblArtwork>tbody').html('');
+        $('#tblArtwork>thead').find('input,select').val('');
+        console.error('got here 22');
+
+        //$('#tblArtwork').after(partialLoader);
+        console.error('got here 23');
+
+        var idFilter = ""; //"IsDeleted eq 0"; //"IsActive eq 1";
+        if (Number(_id) > 0) {
+            idFilter = "ProductLookupId eq " + _id;
+        }
+        console.error('got here 24');
+
+
+        var filterProducts = idFilter + "&$select=ID,Title," +
+            "ProductTitle,PackSize,Strength,Generic," +
+            "Details," +
+            "Status," +
+            "ProductLookup/Id,ProductLookup/Title,ProductLookup/Strength,ProductLookup/Generic," +
+            "DosageFormLookup/Id,DosageFormLookup/Title," +
+            "CountryLookup/Id,CountryLookup/Title," +
+            "CompanyLookup/Id,CompanyLookup/Title," +
+            "Created,Modified" +
+            "&$expand=CompanyLookup,CountryLookup,ProductLookup,DosageFormLookup&$orderby=Modified desc";
+
+        console.error('got here 25');
+        GetSPListItems("Artwork", 0, filterProducts, true)
+            .done(function (data) {
+
+                console.error('got here 26');
+                var response = data.d.results;
+                for (var i = 0; i < response.length; i++) {
+
+                    var _item = response[i];
+
+                    if (havePremission(Permission.VIEW, Module.Artwork, _item["CountryLookup"].Id) == true) {
+                        /*var _statusText = 'In-Active';
+
+                        if (_item.IsActive)
+                            _statusText = (_item.IsActive == true ? 'Active' : 'In-Active');
+                            */
+
+                        console.error('got here 27');
+                        var newRow = "<tr id='" + _item["ID"] + "'>" +
+                            "<td class='Col-ProductId'>-" + _item["ID"] + "-</td>" +
+                            "<td class='Col-ProductModified'>-" + getDataTableSortableDateTime(_item["Modified"]) + _item["Modified"] + "-</td>" +
+                            //"<td class='Col-ProductName'>" + ((_item["ProductLookup"]) ? _item["ProductLookup"].Title : "") + "</td>" +
+                            "<td class='Col-ProductName'>" + ((_item["ProductTitle"]) ? _item["ProductTitle"] : "") + "</td>" +
+                            "<td>" + ((_item["CountryLookup"]) ? _item["CountryLookup"].Title : "") + "</td>" +
+                            //"<td>" + ((_item["ProductLookup"]) ? _item["ProductLookup"].Generic : "") + "</td>" +
+                            //"<td>" + ((_item["ProductLookup"]) ? _item["ProductLookup"].Strength : "") + "</td>" +
+                            "<td>" + _item.Generic + "</td>" +
+                            "<td>" + _item.Strength + "</td>" +
+                            //"<td>" + _item["PackSize"] + "</td>" +
+                            "<td>" + ((_item["DosageFormLookup"]) ? _item["DosageFormLookup"].Title : "") + "</td>" +
+                            //"<td>" + _item["Details"] + "</td>" +
+                            "<td>" + _item["Status"] + "</td>";
+
+                        var _actionButtonHTML = createActionDropdown(_item);
+
+                        newRow = newRow + "<td align='center' style='text-align:center;'>" + _actionButtonHTML + "</td>";
+                        newRow = newRow + "</tr>";
+
+                        $('#tblArtwork>tbody').append(newRow);
+
+                        console.error('got here 28');
+                        getAttachmentCount(_item["ID"]);
+
+                    }
+                }
+
+                if ($('#tblArtwork>tbody').find('tr').length == 0) {
+                    $('#tblArtwork>tbody').html('<tr><td colspan="9">No Artwork created!</td></tr>');
+                }
+
+                $('#tblArtwork').on('draw.dt', function () {
+                    $(".dataTables_filter").find('input').addClass('form-control input-sm');
+                    $(".dataTables_filter").addClass('hide');
+
+                });
+                console.error('got here 29');
+                tblArtworkDataTable = $("#tblArtwork").DataTable({
+                    "order": [[1, "desc"]],
+                    "lengthMenu": [[25, 50, 100, -1], [25, 50, 100, "All"]]
+                });
+                tblArtworkDataTable.column(0).visible(false);
+                tblArtworkDataTable.column(1).visible(false);
+
+
+                $('#tblArtwork' + '_wrapper').parents().eq(0).find('.partial-loader').remove();
+
+                openArtworkFromURL();
+
+                notificationMarkAsSeen();
+
+            });
+
+    }
+
+    function createActionDropdown(_item) {
+
+        var buttonAttr = "";
+
+        var _actionBtnHtml = "<div class='btn-group'>";
+        _actionBtnHtml += "  <button type='button' class='btn btn-primary dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' " + buttonAttr + ">        ";
+        _actionBtnHtml += "    Action <span class='caret'></span>";
+        _actionBtnHtml += "  </button>";
+        _actionBtnHtml += "  <ul class='dropdown-menu dropdown-menu-right'>";
+
+
+        _actionBtnHtml += "    <li class=''><a href='#' id='awf'  onclick='openArtworkDetails(" + _item.Id + ",\"view\")' ><i class='glyphicon glyphicon-list-alt'></i>&nbsp;View</a></li>";
+
+
+        var _actionButtons = "";
+
+        if (_item.Status == "Draft" || _item.Status == "On hold" || _item.Status == "Send Back") {
+
+            if (havePremission(Permission.UPLOAD, Module.Artwork, Number(_item.CountryLookup.Id)) == true) {
+                _actionButtons = _actionButtons + "    <li class=''><a href='#' id='awf'  onclick='openArtworkDetails(" + _item.Id + ",\"edit\")' ><i class='glyphicon glyphicon-edit'></i>&nbsp;Edit</a></li>";
+
+            }
+        }
+
+        if (_item.Status == "Draft" || _item.Status == "On hold") {
+            if (havePremission(Permission.UPLOAD, Module.Artwork, Number(_item.CountryLookup.Id)) == true) {
+                _actionButtons = _actionButtons + "    <li class=''><a href='#' id='awf'  onclick='deleteArtwork(" + _item.Id + ",\"delete\")' ><i class='glyphicon glyphicon-trash'></i>&nbsp;Delete</a></li>";
+            }
+        }
+        if (_item.Status == "Approved") {
+            if (havePremission(Permission.UPLOAD, Module.Artwork, Number(_item.CountryLookup.Id)) == true) {
+                _actionButtons = _actionButtons + "    <li class=''><a href='#' id='awcn'  onclick='openArtworkDetails(" + _item.Id + ",\"new\")' ><i class='glyphicon glyphicon-plus'></i>&nbsp;Add New Artwork</a></li>";
+            }
+        }
+
+        _actionBtnHtml = _actionBtnHtml + _actionButtons;
+
+        _actionBtnHtml += "  </ul>";
+        _actionBtnHtml += "</div>";
+
+
+
+        return _actionBtnHtml;
+    }
+
+
+    function getAttachmentCount(_artworkId) {
+
+        if (Number(_artworkId) > 0) {
+
+
+            var idFilter = "ArtworkLookupId eq " + _artworkId;
+
+            var filterProducts = idFilter + "&$select=Id,Title,FileName,ArtworkLookupId";
+
+            GetSPListItems("ArtworkAttachments", 0, filterProducts, true)
+                .done(function (data2) {
+
+                    var response2 = data2.d.results;
+
+                    if (response2.length > 0) {
+                        var _countHTML = "&nbsp;<span class='badge'>" + response2.length + "</span>";
+                        $('#tblArtwork>tbody').find("tr[id='" + response2[0].ArtworkLookupId + "']").find('.Col-ProductName').append(_countHTML);
+                    }
+
+                });
+        }
+    }
+
+    function openArtworkFromURL() {
+        var _recordId = 0;
+
+        //GetUrlKeyValue('rid')
+        //_recordId = GetQueryString('rid');
+
+        _recordId = localStorage.getItem("ArtworkIdForView");
+
+        if (Number(_recordId) > 0) {
+            openArtworkDetails(_recordId, 'view');
+            localStorage.removeItem("ArtworkIdForView");
+        }
+    }
+
+    function openArtworkDetails(_id, _mode) {
+
+        var modalWindow = $("#divModal-ArtworkDetails");
+
+
+        modalWindow.find(".modal-title").text('Create Artwork');
+
+        // reset All controls
+        modalWindow.find("select,input[type='text'],textarea,input[type='hidden']").val('');
+        modalWindow.find(".is-invalid").removeClass("is-invalid");
+
+        modalWindow.find("#btnSendForApproval").hide();
+
+
+
+        if (_mode == 'view') {
+            modalWindow.find(".modal-title").text('View Artwork');
+            modalWindow.find("#btnSave").hide();
+            modalWindow.find('input,select,textarea').prop('disabled', true);
+
+            $("#btnAddFolder,#btnAddAttachment").hide();
+            modalWindow.find("#divAttachment,#divActionLogs").show();
+        }
+        else if (_mode == 'edit') {
+            if (havePremission(Permission.UPLOAD, Module.Artwork) == true) {
+                modalWindow.find(".modal-title").text('Edit Artwork');
+                modalWindow.find("#btnSave").show();
+                //modalWindow.find('input,select,textarea').not("#txtGeneric,#txtStrength,#ddlDosageType").prop('disabled', false); // it could be amended
+                modalWindow.find('input,select,textarea').prop('disabled', false);
+
+                $("#btnAddFolder,#btnAddAttachment").show();
+                modalWindow.find("#divAttachment,#divActionLogs").show();
+            }
+        }
+        else if (_mode == 'new') {
+            if (havePremission(Permission.UPLOAD, Module.Artwork) == true) {
+                modalWindow.find(".modal-title").text('Add New Artwork');
+                modalWindow.find("#btnSave").show();
+                //modalWindow.find('input,select,textarea').not("#txtGeneric,#txtStrength,#ddlDosageType").prop('disabled', false); // it could be amended
+                modalWindow.find('input,select,textarea').prop('disabled', false);
+
+
+                $("#btnAddFolder,#btnAddAttachment").hide();
+                modalWindow.find("#divAttachment,#divActionLogs").hide();
+            }
+        }
+        else {
+            if (havePremission(Permission.UPLOAD, Module.Artwork) == true) {
+                modalWindow.find(".modal-title").text('Create Artwork');
+                modalWindow.find("#btnSave").show();
+                //modalWindow.find('input,select,textarea').not("#txtGeneric,#txtStrength,#ddlDosageType").prop('disabled', false); // it could be amended
+                modalWindow.find('input,select,textarea').prop('disabled', false);
+
+                modalWindow.find("#divAttachment,#divActionLogs").hide();
+
+            }
+        }
+        modalWindow.find('#ddlManufacturingSite').trigger('chosen:updated');
+
+
+
+        if (_id && Number(_id) > 0) {
+
+            modalWindow.find('#hid_ID').val(_id);
+
+
+            GetSPListItems("Artwork", _id, '')
+                .done(function (data) {
+
+                    var _item = data.d;
+                    if (_item) {
+
+                        modalWindow.find('#hid_ArtworkId').val(_item.ProductLookupId);
+
+                        if (Number(_item.CompanyLookupId) > 0)
+                            modalWindow.find('#ddlCompany').val(_item.CompanyLookupId);
+                        modalWindow.find('#ddlCountry').val(_item.CountryLookupId);
+                        //bindProductsDDL(_item.ProductLookupId);
+                        //modalWindow.find('#ddlProduct').val(_item.ProductLookupId);
+                        modalWindow.find('#txtProduct').val(_item.ProductTitle);
+
+                        modalWindow.find('#txtPackSize').val(_item.PackSize);
+                        modalWindow.find('#txtDetails').val(_item.Details);
+
+
+                        modalWindow.find('#ddlDosageType').val(_item.DosageFormLookupId);
+                        modalWindow.find('#txtGeneric').val(_item.Generic);
+                        modalWindow.find('#txtStrength').val(_item.Strength);
+
+
+                        var manufactureSitesIds = [];
+
+                        if (_item.ManufacturingSitesLookupId && _item.ManufacturingSitesLookupId.results && _item.ManufacturingSitesLookupId.results.length > 0) {
+                            manufactureSitesIds = _item.ManufacturingSitesLookupId.results;
+                        }
+                        modalWindow.find('#ddlManufacturingSite').val(manufactureSitesIds).trigger('chosen:updated');
+
+
+                        //RegNo: '',
+                        //LotReleaseNo: '',
+
+
+                        if (_mode == 'new') {
+
+                            modalWindow.find('#hid_ArtworkId').val('');
+                            $("#hid_ID").val('');
+                        } else {
+
+                            if (_mode == 'edit') {
+                                if (havePremission(Permission.UPLOAD, Module.Artwork) == true) {
+                                    modalWindow.find("#btnSendForApproval").show();
+                                }
+                            }
+
+
+                            if (havePremission(Permission.UPLOAD, Module.Artwork) == false) {
+                                $("#btnAddFolder,#btnAddAttachment,#btnSendForApproval").hide();
+                            }
+
+
+                            //bindProductDetials(_item.ProductLookupId);
+
+                            bindAttachment(_item.Id, _mode);
+
+
+                            bindActionHistory(_item.Id);
+
+                        }
+                    }
+
+                    modalWindow.modal('show');
+
+                });
+
+        } else {
+
+            modalWindow.find('#hid_ID').val("0");
+            modalWindow.modal('show');
+        }
+    }
+
+
+
+    function bindActionHistory(_recordId) {
+        // Specify the Id of the Item that you want to fetch
+        $('#tblActionHistory>tbody').html('');
+
+        $('#tblActionHistory').after(partialLoader);
+        if (Number(_recordId) > 0) {
+            var filterNomenclature = "ArtworkLookupId eq " + _recordId + " and Module eq '" + Module.Artwork + "'&$select=ID,Title,ActionName,Comments,Created,Author/Title&$expand=Author&$orderby=Id desc";
+            GetSPListItems("ActionLogs", 0, filterNomenclature)
+                .done(function (data) {
+                    var response = data.d.results;
+                    for (var i = 0; i < response.length; i++) {
+                        var _item = response[i];
+
+                        var newRow = "<tr id='" + _item["ID"] + "'>" +
+                            "<td>" + toDisplayDateTime(_item["Created"]) + "</td>" +
+                            "<td>" + toDisplayName(_item["Author"].Title) + "</td>" +
+                            "<td>" + _item["ActionName"] + "</td>" +
+                            "<td>" + (_item["Comments"] == null ? "" : _item["Comments"]) + "</td>" +
+                            "</tr>";
+
+                        $('#tblActionHistory>tbody').append(newRow);
+                        $('#divActionLogs').show();
+                    }
+
+                    $('#tblActionHistory' + '').parents().eq(0).find('.partial-loader').remove();
+                });
+        }
+    }
+
+
+    function bindArtworkCompanyDDLs() {
+
+        $("#ddlCountry,#ddlDosageType").find('option').remove();
+        $("#ddlCountry,#ddlDosageType").append("<option value=''> -- None -- </option>");
+
+        var isActiveFilter = ""; //"IsActive eq '1'";
+
+
+        GetSPListItems("Companies", 0, isActiveFilter, true)
+            .done(function (data) {
+                try {
+
+                    if (data && data.d && data.d.results.length > 0) {
+                        for (var _u = 0; _u < data.d.results.length; _u++) {
+                            var _thisUserItem = data.d.results[_u];
+                            var newOPtion = "<option value='" + _thisUserItem.Id + "'>" + _thisUserItem.Title + "</option>";
+                            $("#ddlCompany").append(newOPtion);
+                        }
+                    }
+
+                } catch (ex) { console.log(ex); }
+            });
+
+        GetSPListItems("Countries", 0, isActiveFilter)
+            .done(function (data) {
+                try {
+
+                    if (data && data.d && data.d.results.length > 0) {
+                        for (var _u = 0; _u < data.d.results.length; _u++) {
+                            var _thisUserItem = data.d.results[_u];
+
+
+                            if (havePremission(Permission.UPLOAD, Module.Artwork, _thisUserItem.Id) == true) {
+                                var newOPtion = "<option value='" + _thisUserItem.Id + "'>" + _thisUserItem.Title + "</option>";
+                                $("#ddlCountry").append(newOPtion);
+                            }
+                            else if (havePremission(Permission.VIEW, Module.Artwork, _thisUserItem.Id) == true) {
+                                var newOPtion = "<option value='" + _thisUserItem.Id + "' disabled='disabled'>" + _thisUserItem.Title + "</option>";
+                                $("#ddlCountry").append(newOPtion);
+                            }
+                        }
+                    }
+
+                } catch (ex) { console.log(ex); }
+            });
+
+
+        GetSPListItems("DosageType", 0, isActiveFilter)
+            .done(function (data) {
+                try {
+
+                    if (data && data.d && data.d.results.length > 0) {
+                        for (var _u = 0; _u < data.d.results.length; _u++) {
+                            var _thisUserItem = data.d.results[_u];
+                            var newOPtion = "<option value='" + _thisUserItem.Id + "'>" + _thisUserItem.Title + "</option>";
+                            $("#ddlDosageType").append(newOPtion);
+                        }
+                    }
+
+                } catch (ex) { console.log(ex); }
+            });
+
+
+        GetSPListItems("ManufacturingSites", 0, isActiveFilter)
+            .done(function (data) {
+                try {
+
+                    if (data && data.d && data.d.results.length > 0) {
+                        for (var _u = 0; _u < data.d.results.length; _u++) {
+                            var _thisUserItem = data.d.results[_u];
+                            var newOPtion = "<option value='" + _thisUserItem.Id + "'>" + _thisUserItem.Title + "</option>";
+                            $("#ddlManufacturingSite").append(newOPtion);
+                        }
+                    }
+
+                } catch (ex) { console.log(ex); }
+            });
+    }
+
+    var _selectProductId = 0;
+    function bindProductsDDL(_id) {
+
+        _selectProductId = _id;
+
+        $("#ddlProduct").find('option').remove();
+        $("#ddlProduct").html("<option value=''> -- None -- </option>");
+
+        var modWin = $("#divModal-ArtworkDetails");
+        modWin.find('#hid_ArtworkId').val('0');
+        modWin.find('#ddlDosageType').val('');
+        modWin.find('#txtGeneric').val('');
+        modWin.find('#txtStrength').val('');
+
+        var _cID = $("#ddlCountry").val();
+        if (Number(_cID) > 0) {
+            var isActiveFilter = "CountryLookupId eq '" + _cID + "'"; //"IsActive eq '1'";
+
+            GetSPListItems("Products", 0, isActiveFilter)
+                .done(function (data) {
+                    try {
+                        if (data && data.d && data.d.results.length > 0) {
+                            for (var _u = 0; _u < data.d.results.length; _u++) {
+                                var _thisItem = data.d.results[_u];
+                                var newOPtion = "<option value='" + _thisItem.Id + "'>" + _thisItem.Title + "</option>";
+                                $("#ddlProduct").append(newOPtion);
+                            }
+
+                            if (_selectProductId && Number(_selectProductId) > 0) {
+                                $("#ddlProduct").val(_selectProductId);
+                            }
+                        }
+                    } catch (ex) { console.log(ex); }
+                });
+        }
+
+
+    }
+
+    function ddlProductChange(_id) {
+
+        var _id = $("#ddlProduct").val();
+        bindProductDetials(_id);
+    }
+
+    function bindProductDetials(_id) {
+
+        var modalWindow = $("#divModal-ArtworkDetails");
+        modalWindow.find('#ddlDosageType').val('');
+        modalWindow.find('#txtGeneric').val('');
+        modalWindow.find('#txtStrength').val('');
+
+
+        if (_id && Number(_id) > 0) {
+
+            GetSPListItems("Products", _id, '')
+                .done(function (data) {
+
+                    var modalWindow = $("#divModal-ArtworkDetails");
+                    var _item = data.d;
+                    if (_item) {
+
+
+                        //modalWindow.find(".modal-title").text('Edit Artwork');
+
+                        modalWindow.find('#ddlDosageType').val(_item.DosageTypeId);
+                        modalWindow.find('#txtGeneric').val(_item.Generic);
+                        modalWindow.find('#txtStrength').val(_item.Strength);
+
+                    }
+
+                    //modalWindow.modal('show');
+
+                });
+
+
+        } /*else {
+
+            modalWindow.find("select,input[type='text'],input[type='hidden']").not("#ddlCompany,#ddlLotReleasedProduct").val('');
+            modalWindow.find(".is-invalid").removeClass("is-invalid");
+        }*/
+
+    }
+
+
+
+    function SearchCol(_index) {
+        var tableSelector = '#tblArtwork';
+        var table = $(tableSelector);
+        var datatable = $(tableSelector).DataTable();
+
+        table.find('th input,th select').each(function () {
+            var index = $(this).parents('th').data("column");
+            var searchByValue = $(this).val();
+            var isExpression = false;
+
+            if (index > -1) {
+                datatable.column(index).search(searchByValue);
+            }
+        });
+
+        datatable.draw();
+    }
+
+</script>
+
+
+<script type="text/javascript">
+
+    function saveArtwork(_type) {
+        console.error('got here');
+        var isValid = true;
+
+        var modalWindow = $("#divModal-ArtworkDetails");
+
+
+        modalWindow.find('.is-invalid').removeClass("is-invalid");
+
+        if ((modalWindow.find("#ddlCompany").val().length > 0) == false) {
+            isValid = false;
+            modalWindow.find("#ddlCompany").addClass("is-invalid");
+        }
+        console.error('got here 1');
+
+        if ((modalWindow.find("#ddlCountry").val().length > 0) == false) {
+            isValid = false;
+            modalWindow.find("#ddlCountry").addClass("is-invalid");
+        }
+        /*if ((modalWindow.find("#ddlProduct").val().length > 0) == false) {
+            isValid = false;
+            modalWindow.find("#ddlProduct").addClass("is-invalid");
+        }*/
+
+        if ((modalWindow.find("#txtProduct").val().length > 0) == false) {
+            isValid = false;
+            modalWindow.find("#txtProduct").addClass("is-invalid");
+        }
+        console.error('got here 2');
+
+        if ((modalWindow.find("#txtPackSize").val().length > 0) == false) {
+            isValid = false;
+            modalWindow.find("#txtPackSize").addClass("is-invalid");
+        }
+
+
+        if ((modalWindow.find("#ddlDosageType").val().length > 0) == false) {
+            isValid = false;
+            modalWindow.find("#ddlDosageType").addClass("is-invalid");
+        }
+
+        if ((modalWindow.find("#txtGeneric").val().length > 0) == false) {
+            isValid = false;
+            modalWindow.find("#txtGeneric").addClass("is-invalid");
+        }
+
+        if ((modalWindow.find("#txtStrength").val().length > 0) == false) {
+            isValid = false;
+            modalWindow.find("#txtStrength").addClass("is-invalid");
+        }
+
+        console.error('got here 3');
+
+        /* if ((modalWindow.find("#txtDetails").val().length > 0) == false) {
+             isValid = false;
+             modalWindow.find("#txtDetails").addClass("is-invalid");
+         }*/
+
+        if ((modalWindow.find("#ddlManufacturingSite").val().length > 0) == false) {
+            isValid = false;
+            modalWindow.find("#ddlManufacturingSite,#ddlManufacturingSite_chosen").addClass("is-invalid");
+        }
+
+
+
+        console.error('got here 4');
+
+        if (isValid == true) {
+
+            console.error('got here 5');
+
+            RequestStarted();
+
+            console.error('got here 6');
+
+            setTimeout(function () {
+
+                console.error('got here 7');
+
+                var _recordID = $("#hid_ID").val();
+
+                var _productId = modalWindow.find('#ddlProduct').val();
+
+                var manufactureSitesIds = modalWindow.find('#ddlManufacturingSite').val();
+
+
+                var jsonData = {
+                    CompanyLookupId: $("#ddlCompany").val(),
+                    CountryLookupId: $("#ddlCountry").val(),
+                    //ProductLookupId: _productId,
+
+                    ProductTitle: modalWindow.find('#txtProduct').val(),
+                    PackSize: modalWindow.find('#txtPackSize').val(),
+                    ManufacturingSitesLookupId: { "results": manufactureSitesIds },
+                    Details: modalWindow.find('#txtDetails').val(),
+                    DosageFormLookupId: modalWindow.find('#ddlDosageType').val(),
+                    Strength: modalWindow.find('#txtStrength').val(),
+                    Generic: modalWindow.find('#txtGeneric').val(),
+                    Status: 'On hold'
+                }
+
+                if (_type == 'final') {
+                    jsonData.Status = "Pending";
+                }
+
+                console.error('got here 8');
+
+                if (Number(_recordID) > 0) {
+
+                    UpdateSPList("Artwork", _recordID, jsonData, false).done(function (data) {
+
+                        saveActionLog(_recordID, "Edit", jsonData.Status, Module.Artwork);
+
+                        if (jsonData.Status == 'Pending') {
+                            sendNotification();
+                        }
+
+                        // Retrive Nomenclatures newly Added
+
+                        bindArtworkTable();
+
+                        $("#divModal-ArtworkDetails").modal('hide');
+
+                        RequestEnded();
+
+                        alert('Artwork has been edit successfully');
+
+                    }).fail(function (jqXHR, textStatus) {
+
+                        alert("Artwork Saving Fail! \n\nDetails\n" + jqXHR.responseJSON.error.message.value);
+                        RequestEnded();
+                    });
+
+                }
+                else {
+
+                    console.error('got here 9');
+
+                    InsertIntoSPList('Artwork', jsonData, false).done(function (data) {
+                        //console.log(data.d.results);
+
+                        console.error('got here 10');
+
+                        if (Number(data.d.ID) > 0) {
+
+                            console.error('got here 11');
+
+                            saveActionLog(data.d.ID, "Created", data.d.Status, Module.Artwork);
+
+                            console.error('got here 12');
+
+                            if (data.d.Status == 'Pending') {
+                                sendNotification();
+                            }
+
+                            console.error('got here 13');
+
+                            bindArtworkTable();
+
+                            console.error('got here 14');
+
+                            //$("#divModal-ArtworkDetails").modal('hide');
+                            RequestEnded();
+
+                            console.error('got here 15');
+
+                            openArtworkDetails(data.d.ID, 'edit');
+
+                            console.error('got here 16');
+
+                            alert('Artwork has been added successfully');
+
+                        }
+
+                    }).fail(function (jqXHR, textStatus) {
+
+                        alert("Artwork Saving Fail! \n\nDetails\n" + jqXHR.responseJSON.error.message.value);
+                        RequestEnded();
+                    });
+                }
+
+            }, 50)
+
+        }
+        else {
+            alert("Please fill highlighted fields first!");
+        }
+    }
+
+
+    function deleteArtwork(_recordID) {
+
+        var _confirmResult = confirm("Are you sure you want to delete this Artwork?");
+        if (_confirmResult == true) {
+
+            GetSPListItems("Artwork", _recordID, '').done(function (data) {
+
+                if (data && data.d) {
+                    deleteItem("Artwork", data.d).done(function (data) {
+                        alert('Artwork has been deleted successfully');
+
+                        //var _hid_ProductId = $("#divModal-LotReleased").find('#hid_ID').val();
+                        bindArtworkTable();
+
+                        RequestEnded();
+                    });
+                }
+
+            }).fail(function (jqXHR, textStatus) {
+
+                alert("Artwork Deleting Fail! \n\nDetails\n" + jqXHR.responseJSON.error.message.value);
+                RequestEnded();
+            });
+        }
+
+    }
+
+
+
+</script>
+
+
+
+
+
+<script type="text/javascript">
+
+    var _needtoReopenthisWindow = null;
+    function openAddAttachment(_id) {
+
+        var modalWindow = $("#divModal-ArtworkAttachment");
+
+        var _artworkId = $("#divModal-ArtworkDetails").find('#hid_ID').val();
+
+        // reset All controls
+        modalWindow.find("select,input[type='text'],input[type='hidden']").val('');
+        modalWindow.find(".is-invalid").removeClass("is-invalid");
+        modalWindow.find('#hid_ArtworkId').val(_artworkId);
+        modalWindow.find('#ddlFolders').find('option').remove();
+        modalWindow.find('#ddlFolders').append("<option value=''> -- None -- </option>");
+
+        if (_artworkId && Number(_artworkId) > 0) {
+
+
+            //// making folder optional
+            modalWindow.modal('show');
+            _needtoReopenthisWindow = $("#divModal-ArtworkDetails");
+
+            var folderFilter = "ArtworkLookupId eq " + _artworkId
+            GetSPListItems("ArtworkFolders", 0, folderFilter)
+                .done(function (folderData) {
+                    if (folderData && folderData.d && folderData.d.results && folderData.d.results.length > 0) {
+
+                        folderData.d.results.forEach(function (_item) {
+                            var _optionfolderhtml = "<option value='" + _item.Id + "'>" + _item.Title + "</option>";
+
+                            modalWindow.find('#ddlFolders').append(_optionfolderhtml);
+                        });
+                        /* //// making folder optional
+                        modalWindow.modal('show');
+
+                        _needtoReopenthisWindow = $("#divModal-ArtworkDetails");
+                    }
+                    else {
+                        alert("No folder available for this artwork!");
+                        */
+                    }
+
+                });
+
+        }
+    }
+
+    function openFolderSPDialog() {
+
+        var _artworkId = $("#divModal-ArtworkDetails").find('#hid_ID').val();
+        var queryString = "awid=" + _artworkId;
+        var source = window.location.href;
+        var sucMsg = "New Folder has been added successfully.";
+        openNewItemDialog('ArtworkFolders', 'Add Folder', source, queryString, sucMsg, 650, false);
+
+    }
+
+    function bindAttachment(_artworkId, mode) {
+
+        if (Number(_artworkId) > 0) {
+
+            // Specify the Id of the Item that you want to fetch
+            $('#tblAttachment>tbody').html('<tr><td colspan="6">No attachment attachted!</td></tr>');
+
+            $('#tblAttachment').after(partialLoader);
+
+            var idFilter = "ArtworkLookupId eq " + _artworkId;
+
+
+            var filterProducts = idFilter + "&$select=ID,Title,FileName,Created,ApprovalDate,ArtworkLookup/Id,ArtworkLookup/Title,FolderLookup/Id,FolderLookup/Title,IsCertificate&$expand=ArtworkLookup,FolderLookup&$orderby=Id desc";
+
+            GetSPListItems("ArtworkAttachments", 0, filterProducts)
+                .done(function (data) {
+
+                    var response = data.d.results;
+
+                    if (response.length > 0) {
+                        $('#tblAttachment>tbody').html('');
+                    }
+
+                    for (var i = 0; i < response.length; i++) {
+
+                        var _item = response[i];
+
+                        var _FilePreviewOption = "<a  href='#' class='alert-link' onclick='viewDocument(" + _item.Id + ",\"" + _item.FileName + "\");' title='Preview'  ><i class='glyphicon glyphicon-file'></i> " + _item["FileName"] + "</a>";
+
+
+                        var newRow = "<tr id='" + _item["ID"] + "'>" +
+
+                            "<td>" + (i + 1) + "</td>" +
+                            "<td>" + ((_item["FolderLookup"] && Number(_item["FolderLookup"].Id) > 0) ? "<i class='glyphicon glyphicon-folder-open' style='color:#f0ad4e;margin-right: 8px;'></i>" + _item["FolderLookup"].Title : "") + "</td>" +
+                            "<td>" + _FilePreviewOption + "</td>" +
+                            "<td>" + toDisplayDate(_item["ApprovalDate"]) + "</td>";
+                        //"<td>" + (_item["IsCertificate"] == true ? 'Yes' : 'No') + "</td>";
+
+                        var _actionButtonHTML = "";
+
+                        if (havePremission(Permission.DOWNLOAD, Module.Artwork, $("#divModal-ArtworkDetails").find("#ddlCountry").val()) == true) {
+                            _actionButtonHTML = _actionButtonHTML + "<a href='#'  title='Download'  onclick='downloadDocument(" + _item.Id + ")' class='m-5' ><i class='glyphicon glyphicon-download'></i></a>";
+                        }
+                        if (mode != 'view' && havePremission(Permission.UPLOAD, Module.Artwork, $("#divModal-ArtworkDetails").find("#ddlCountry").val()) == true) {
+                            _actionButtonHTML = _actionButtonHTML + "&nbsp;<a href='#'  title='Delete'  onclick='deleteArtworkAttachment(" + _item.Id + ")' ><i class='glyphicon glyphicon-trash'></i></a>";
+                        }
+                        if (mode != 'view' && havePremission(Permission.Share, Module.Artwork, $("#divModal-ArtworkDetails").find("#ddlCountry").val()) == true) {
+                            _actionButtonHTML = _actionButtonHTML + "&nbsp;<a id='btnShareIt_" + _item.Id + "' href='#' onclick=\"openShareWindow(" + _item.Id + "," + _item.Id + ",'" + _item["FileName"] + "');\"  title='Share'><i class='glyphicon glyphicon-share'></i></a> ";
+                        }
+
+
+                        newRow = newRow + "<td align='center' style='text-align:center;' class='h5'>" + _actionButtonHTML + "</td>";
+                        newRow = newRow + "</tr>";
+
+                        $('#tblAttachment>tbody').append(newRow);
+
+                    }
+
+                    $('#tblAttachment' + '').parents().eq(0).find('.partial-loader').remove();
+
+                });
+        }
+    }
+
+
+    function viewDocument(_fileId, _FileTitle) {
+        if (Number(_fileId) > 0) {
+
+            //jQuery.noConflict();
+            $('#divModal_ViewDocument').find("#h4NomenclatureTitle").text(_FileTitle);
+            $('#divModal_ViewDocument').find("#frmpdf").remove();
+
+
+            //$("#divModal_ViewAllAttachements").removeClass('fade');
+            //$("#divModal_ViewAllAttachements").modal('hide');
+            //setTimeout(function () {
+            //    _needtoReopenthisWindow = $("#divModal_ViewAllAttachements");
+
+            //}, 500);
+
+            //$('#divModal_ViewDocument').find("#frmpdf").get(0).src = "";
+            //$('#divModal_ViewDocument').find("#frmpdf").get(0).style.display = "none";
+
+            //setTimeout(function () { },0);
+
+            var listName = 'ArtworkAttachments';
+            var apiURL = _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('" + listName + "')/items/GetById(" + _fileId + ")/file";
+
+            $.ajax({
+                url: apiURL,
+                type: "GET",
+                headers: {
+                    "Accept": "application/json; odata=verbose",
+                },
+                success: function (dataFileInfo) {
+
+                    if (dataFileInfo.d) {
+
+                        var fileURL = location.origin + dataFileInfo.d.ServerRelativeUrl;
+                        window.open(fileURL, '_blank');
+
+                        /*
+                        if (fileURL.search('.docx') > 0) {
+                            downloadFunction(fileURL);
+                            alert("File has been downloaded!");
+                        }
+                        else {
+                            //document.getElementById("frmpdf").style.display = "block";
+                            //document.getElementById("frmpdf").src = fileURL;
+
+                            var _iframe = document.createElement("iframe");
+                            _iframe.id = "frmpdf";
+                            _iframe.src = fileURL;
+                            _iframe.width = "100%";
+                            _iframe.height = "700px";
+
+                            var element = document.getElementById("divfrmpdf");
+                            element.appendChild(_iframe);
+
+
+                            jQuery.noConflict();
+                            jQuery('#divModal_ViewDocument').modal('show');
+                        }*/
+                    }
+                },
+                error: function (error) {
+                    console.log("Error on getting file info", error);
+
+                    RequestEnded();
+                }
+            });
+        }
+        else {
+            alert("No document found!");
+        }
+
+    }
+</script>
+
+
+
+<script type="text/javascript">
+
+    var Tasks = {
+        urlName: window.location.origin + "/",
+        siteName: '/sites/SearimsTest',
+    };
+
+    // start
+    function saveAttachment() {
+        console.error('found it');
+        var isValid = true;
+
+        var modalWindow = $("#divModal-ArtworkAttachment");
+
+        modalWindow.find('.is-invalid').removeClass("is-invalid");
+
+        /* if ((modalWindow.find("#ddlFolders").val().length > 0) == false) {
+             isValid = false;
+             modalWindow.find("#ddlFolders").addClass("is-invalid");
+         }*/
+
+        if ((modalWindow.find("#txtApprovalDate").val().trim().length > 0) == false) {
+            isValid = false;
+            modalWindow.find("#txtApprovalDate").addClass("is-invalid");
+        }
+
+        if ((modalWindow.find("#fileAttachedFiles")[0].files.length > 0) == false) {
+            isValid = false;
+            modalWindow.find("#fileAttachedFiles").addClass("is-invalid");
+        }
+
+        if (isValid == true) {
+
+            console.error('got here 1');
+            saveAttachmentValid();
+
+        }
+    }
+
+
+    function saveAttachmentValid() {
+
+        console.error('got here 2');
+        var docidall = "0;";
+        // Define the folder path for this example.
+        var serverRelativeUrlToFolder = 'ArtworkAttachments';
+
+        // Get test values from the file input and text input page controls.
+        var fileInput = jQuery('#fileAttachedFiles');
+        var fileCount = fileInput[0].files.length;
+        // Get the server URL.
+        var serverUrl = _spPageContextInfo.webAbsoluteUrl;
+        var filesUploaded = 0;
+
+        var _artworkId = $("#divModal-ArtworkDetails").find('#hid_ID').val();
+
+        if (isPDFFiles()) {
+
+            //RequestStarted();
+            showLoader();
+
+            setTimeout(function () {
+                $("#custom-loader").css("z-index", "2002");
+            }, 100);
+
+            for (var i = 0; i < fileCount; i++) {
+                // Initiate method calls using jQuery promises.
+                // Get the local file as an array buffer.
+                var getFile = getFileBuffer(i);
+                getFile.done(function (arrayBuffer, i) {
+
+                    // Add the file to the SharePoint folder.
+                    var addFile = addFileToFolder(arrayBuffer, i);
+                    addFile.done(function (file, status, xhr) {
+                        //$("#msg").append("<div>File : "+file.d.Name+" ... uploaded sucessfully</div>");
+                        filesUploaded++;
+
+                        var getItem = getListItem(file.d.ListItemAllFields.__deferred.uri);
+                        getItem.done(function (listItem, status, xhr) {
+                            console.error('got here 22');
+                            var updateObject = {
+                                __metadata: {
+                                    type: listItem.d.__metadata.type
+                                },
+                                ArtworkLookupId: _artworkId,
+                                FileName: fileInput[0].files[i].name,
+                                ApprovalDate: $('#txtApprovalDate').datepicker('getDate')
+                            };
+                            console.error('got here 23');
+                            if (Number($('#ddlFolders').val()) > 0) {
+                                updateObject.FolderLookupId = $('#ddlFolders').val();
+                            }
+                            console.error('got here 24');
+                            var changeItem = updateListItem(listItem.d.__metadata, JSON.stringify(updateObject));
+                            changeItem.done(function (data, status, xhr) {
+                                console.error('got here 25');
+                                docidall += listItem.d.__metadata.id + ";";
+                                if (fileCount == filesUploaded) {
+
+                                    bindAttachment(_artworkId);
+                                    //RequestEnded();
+                                    hideLoader();
+
+                                    alert("All files uploaded successfully.");
+                                    $('#divModal-ArtworkAttachment').modal('hide');
+                                    $('#ddlFolders').val('');
+                                    $("#fileAttachedFiles").val("");
+
+                                    $("#txtApprovalDate").datepicker("setDate", null);
+                                    //$('#chkiscertificate').prop('checked', false);
+
+                                    filesUploaded = 0;
+                                    console.error('got here 26');
+                                }
+                            });
+                            changeItem.fail(onError => { hideLoader(); });
+                        });
+                        getItem.fail(onError => { hideLoader(); });
+
+                        //var file = data.d;
+                        // register/post register
+
+
+                        //var url = serverUrl + "/_api/Web/lists/getbytitle('" + serverRelativeUrlToFolder + "')/items(" + file.ListItemAllFields.Id + ")";
+                        //updateFileMetadata(url, updateObject, file, function (result) {
+                            //alert("File metadata updation done successfully");
+                        //}, function (result) {
+                            //alert("File upload done but metadata updating FAILED");
+                        //});
+                    });
+                    addFile.fail(onError);
+                });
+                getFile.fail(onError);
+            }
+        }
+
+        function getListItem(fileListItemUri) {
+            console.error('got here 3');
+            return jQuery.ajax({
+                url: fileListItemUri,
+                type: "GET",
+                headers: { "accept": "application/json;odata=verbose" }
+            });
+        }
+
+        function updateListItem(itemMetadata, body) {
+            console.error('got here 4');
+
+            //var body1 = String.format("{{'__metadata':{{'type':'{0}'}},'FileLeafRef':'{1}','Title':'{2}'}}",
+                //itemMetadata.type, "", "");
+
+            //body = JSON.stringify(body).replace(/"/g, "'").replace(/\\/g, '');
+            //body = body.substring(1, body.length - 1);
+            //body = "\"" + body + "\"";
+            //console.error('body ' + body);
+            //console.error('body1 ' + JSON.stringify(body1));
+
+            return jQuery.ajax({
+                url: itemMetadata.uri,
+                type: "POST",
+                data: body,
+                headers: {
+                    "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                    "content-type": "application/json;odata=verbose",
+                    "content-length": body.length,
+                    "IF-MATCH": itemMetadata.etag,
+                    "X-HTTP-Method": "MERGE"
+                }
+            });
+        }
+
+        function isPDFFiles() {
+            var flag = true;
+            var files = fileInput[0].files;
+            var maxsize = 5 * 1024 * 1024 * 1024;//2GB
+            for (var i = 0; i < files.length; i++) {
+                // validate extension
+                //if (files[i].name.split(".")[1].toLowerCase() != "pdf") {
+                //    flag = false;
+                //    alert("Please update PDF files.");
+                //    break;
+                //}
+                if (files[i].name.substr(-3).toLowerCase() != "pdf") {
+                    flag = false;
+                    alert("Please update PDF files.");
+                    break;
+                }
+
+                // validate file size
+                if (files[i].size > maxsize) {
+                    flag = false;
+                    alert("File size must be under 5GB.");
+                    break;
+
+                }
+            }
+            return flag;
+        }
+        //update file metadata
+        function updateFileMetadata(apiUrl, updateObject, file, success, failure) {
+            $.ajax({
+                url: apiUrl,
+                type: "POST",
+                async: false,
+                data: JSON.stringify(updateObject),
+                headers: {
+                    "accept": "application/json;odata=verbose",
+                    "X-RequestDigest": $("#__REQUESTDIGEST").val(),
+                    "Content-Type": "application/json;odata=verbose",
+                    "X-Http-Method": "MERGE",
+                    "IF-MATCH": file.ListItemAllFields.__metadata.etag,
+                },
+                success: function (data) {
+                    success(data);
+                },
+                error: function (data) {
+                    failure(data);
+                }
+            });
+        }
+        // Get the local file as an array buffer.
+        function getFileBuffer(i) {
+            console.error('got here 5');
+            var deferred = jQuery.Deferred();
+            var reader = new FileReader();
+            reader.onloadend = function (e) {
+                deferred.resolve(e.target.result, i);
+            }
+            reader.onerror = function (e) {
+                deferred.reject(e.target.error);
+            }
+            reader.readAsArrayBuffer(fileInput[0].files[i]);
+            return deferred.promise();
+        }
+
+        // Add the file to the file collection in the Shared Documents folder.
+        function addFileToFolder(arrayBuffer, i) {
+            console.error('got here 6');
+            var index = i;
+
+            // Get the file name from the file input control on the page.
+            //   var fileName = fileInput[0].files[index].name;
+
+            var today = new Date();
+            var cHour = today.getHours();
+            var cMin = today.getMinutes();
+            var cSec = today.getSeconds();
+            //  var fileName = fileInput[0].val().split('.').pop();
+
+            // var fileName = fileInput[0].files[index].name.split('.');
+            var filenameLength = fileInput[0].files[index].name.length;
+            var fileName = fileInput[0].files[index].name.substr(0, filenameLength - 4);
+
+            fileName = fileName + "-" + cHour + "-" + cMin + "-" + cSec + ".pdf";
+
+
+            // Construct the endpoint.
+            var fileCollectionEndpoint = String.format(
+                "{0}/_api/web/getfolderbyserverrelativeurl('{1}')/files" +
+                "/add(overwrite=true, url='{2}')?$expand=ListItemAllFields",
+                serverUrl, serverRelativeUrlToFolder, fileName);
+
+            var deferred = jQuery.Deferred();
+            console.error('index ' + index);
+            document.getElementById("btnSave").addEventListener("progress",
+                function (_evt) { fileuploaderprogresser2(_evt, "li-file-" + index, fileInput[0].files[index].size); }, false);
+            uploadLargeFile2(fileInput[0].files[index], serverRelativeUrlToFolder, fileName, arrayBuffer, deferred, index);
+            return deferred.promise();
+
+
+            // Send the request and return the response.
+            // This call returns the SharePoint file.
+            /*return jQuery.ajax({
+                url: fileCollectionEndpoint,
+                type: "POST",
+                data: arrayBuffer,
+                processData: false,
+                headers: {
+                    "accept": "application/json;odata=verbose",
+                    "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                    "content-length": arrayBuffer.byteLength
+                },
+                xhr: function () {
+                    var xhr = new window.XMLHttpRequest();
+
+                    xhr.upload.addEventListener("progress", function (_evt) { fileuploaderprogresser(_evt, "li-file-" + index); }, false);
+
+                    return xhr;
+                },
+            });*/
+
+
+        }
+
+    }
+    // Display error messages.
+    function onError(error) {
+        alert('File Uploading Fail! Try again after refreshing page.\n\nError Text:\n\n' + error.responseText);
+        //RequestEnded();
+        hideLoader();
+    }
+
+    function uploadLargeFile2(file, libname, filename, arrayBuffer, deferred, fileIndex) {
+        console.error('got here 7');
+        var docLibraryName = "/sites/SearimsTest/" + libname;
+        var fileName = filename;
+        var folderName = "";
+        createDummyFile(docLibraryName, fileName)
+        var fr = new FileReader();
+        var offset = 0;
+        var total = file.size;
+        var length = parseInt(1000000) > total ? Math.round(total * 0.8) : parseInt(1000000);
+        var chunks = [];
+
+        while (offset < total) {
+            if (offset + length > total)
+                length = total - offset;
+            chunks.push({
+                offset,
+                length,
+                method: getUploadMethod(offset, length, total)
+            });
+            offset += length;
+        }
+        for (var i = 0; i < chunks.length; i++)
+            console.log(chunks[i]);
+
+        const chunkPercentage = (total / chunks.length) / total * 100;
+
+        if (chunks.length > 0) {
+            const id = this.guid();
+            console.error('id ' + id);
+            this.uploadFile(arrayBuffer, id, docLibraryName, filename, chunks, 0, 0, chunkPercentage, deferred, false, fileIndex);
+        }
+    }
+
+    function createDummyFile(libraryName, fileName) {
+        console.error('got here 8');
+
+        return new Promise((resolve, reject) => {
+            var endpoint = Tasks.urlName + Tasks.siteName + "/_api/web/GetFolderByServerRelativeUrl('" + libraryName + "')/Files/add(url=@TargetFileName,overwrite='true')?" +
+                "&@TargetFileName='" + fileName + "'";
+            const headers = {
+                "accept": "application/json;odata=verbose"
+            };
+            this.executeAsync(endpoint, this.convertDataBinaryString(2), headers).then(file => resolve(true)).catch(err => reject(err));
+        });
+    }
+
+    function guid() {
+        console.error('got here 9');
+        function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+        }
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+    }
+
+    function getUploadMethod(offset, length, total) {
+        console.error('got here 10');
+        if (offset + length + 1 > total) {
+            return 'finishupload';
+        } else if (offset === 0) {
+            return 'startupload';
+        } else if (offset < total) {
+            return 'continueupload';
+        }
+        return null;
+    }
+
+    function uploadFile(result, id, libraryPath, fileName, chunks, index, byteOffset, chunkPercentage, deferred, lastCall, fileIndex) {
+        console.error('got here 11');
+        //we slice the file blob into the chunk we need to send in this request (byteOffset tells us the start position)  
+        const data = this.convertFileToBlobChunks(result, byteOffset, chunks[index]);
+
+        const progressEvent = new CustomEvent("progress", {
+            detail: {
+                index: index,
+                total: chunks.length,
+                offset: chunks[index].offset,
+                fileIndex: fileIndex
+            },
+        });
+        document.getElementById("btnSave").dispatchEvent(progressEvent);
+
+        //upload the chunk to the server using REST, using the unique upload guid as the identifier
+        this.uploadFileChunk(id, libraryPath, fileName, chunks[index], data, byteOffset, deferred, lastCall).then(value => {
+
+            var jsonObject = JSON.parse(value.body);
+
+            const isFinished = index === chunks.length - 1;
+            index += 1;
+            const percentageComplete = isFinished ? 100 : Math.round((index * chunkPercentage));
+            if (index < chunks.length) {
+                this.uploadFile(result, id, libraryPath, fileName, chunks, index, byteOffset, chunkPercentage, deferred, lastCall, fileIndex);
+            } else {
+                console.error('uploadFileChunk resolve ');
+                deferred.resolve(jsonObject);
+                const progressEvent = new CustomEvent("progress", {
+                    detail: {
+                        index: index,
+                        total: chunks.length,
+                        offset: chunks[index - 1].offset + chunks[index - 1].length,
+                        fileIndex: fileIndex
+                    },
+                });
+                document.getElementById("btnSave").dispatchEvent(progressEvent);
+            }
+        }).catch(err => {
+            console.error('Error in uploadFileChunk! ' + err);
+            deferred.reject();
+        });
+    }
+
+    function convertFileToBlobChunks(result, byteOffset, chunkInfo) {
+        console.error('got here 12');
+        let arrayBuffer = result.slice(chunkInfo.offset, chunkInfo.offset + chunkInfo.length);
+        return this.convertDataBinaryString(arrayBuffer);
+    }
+
+    function uploadFileChunk(id, libraryPath, fileName, chunk, data, byteOffset, deferred, lastCall) {
+        console.error('got here 13');
+        return new Promise((resolve, reject) => {
+            console.error('got here 15');
+            let offset = chunk.offset === 0 ? '' : ',fileOffset=' + chunk.offset;
+            console.error('got here 16');
+            var endpoint = Tasks.urlName + Tasks.siteName + "/_api/web/getfilebyserverrelativeurl('" + libraryPath + "/" + fileName + "')/" + chunk.method + "(uploadId=guid'" + id + "'" + offset + ")";
+            console.error('got here 17');
+            const headers = {
+                "Accept": "application/json; odata=verbose",
+                "Content-Type": "application/octet-stream"
+            };
+            console.error('got here 18');
+            this.executeAsync(endpoint, data, headers, deferred, lastCall).then(data => {
+                //var jsonObject = JSON.parse(data.body);
+                resolve(data);
+                console.error('got here 21');
+            }).catch(err => reject(err));
+        });
+    }
+
+    function executeAsync(endPointUrl, data1, requestHeaders, deferred, lastCall) {
+        console.error('got here 14');
+        return new Promise((resolve, reject) => {
+            // using a utils function we would get the APP WEB url value and pass it into the constructor... 
+            console.error('got here 19');
+            let executor = new SP.RequestExecutor(this.siteUrl);
+            console.error('got here 20');
+            // Send the request.  
+            executor.executeAsync({
+                url: endPointUrl,
+                method: "POST",
+                body: data1,
+                binaryStringRequestBody: true,
+                headers: requestHeaders,
+                success: function (data) {
+                    resolve(data);
+                },//offset => resolve(offset),
+                error: err => reject(err.responseText)
+            });
+        });
+    }
+
+
+    function fileuploaderprogresser2(evt, _uploadingFileId, fileSize) {
+
+        console.error('fileuploaderprogresser2 ' + evt.detail.index + ' ' + evt.detail.total + ' ' + evt.detail.offset);
+        console.error('_uploadingFileId ' + _uploadingFileId);
+        _uploadingFileId = "li-file-" + evt.detail.fileIndex;
+        console.error('_uploadingFileId ' + _uploadingFileId);
+        var fileSize = evt.detail.offset;
+        var percentComplete = evt.detail.index / evt.detail.total;
+        percentComplete = parseInt(percentComplete * 100);
+        console.error('fileuploaderprogresser2 percentComplete ' + percentComplete);
+
+        //var testTisObj = this;
+
+        var _progressBar = $("#olSelectFiles").find("#" + _uploadingFileId).find(".progress-bar");
+        if (_progressBar.length == 0) {
+            console.error('fileuploaderprogresser2 got here 1');
+            var htmlProgressBar = "<div class='progress no-margin'>" +
+                "  <div class='progress-bar progress-bar-warning progress-bar-striped' role='progressbar' aria-valuenow='" + percentComplete + "' aria-valuemin='0' aria-valuemax='100' style='width: " + percentComplete + "%'>" +
+                "    <span class='sr-only'>" + percentComplete + "% Complete (Still uploading)</span>" +
+                "  </div>" +
+                "</div>";
+            $("#olSelectFiles").find("#" + _uploadingFileId).html(htmlProgressBar);
+        }
+        else {
+            console.error('fileuploaderprogresser2 got here 2');
+            _progressBar.css("width", percentComplete + '%');
+            if (percentComplete < 100) {
+                console.error('fileuploaderprogresser2 got here 3');
+
+                _progressBar.find(".sr-only").text("" + percentComplete + "% Complete (Still uploading)");
+
+                //var fileSize = evt.loaded / 1024;
+
+                if (fileSize > 1048575) {
+                    fileSize = (fileSize / 1024);
+                    fileSize = (fileSize / 1024).toFixed(3) + " MB uploaded";
+                }
+                else if (fileSize > 1023)
+                    fileSize = (fileSize / 1024).toFixed(3) + " KB uploaded";
+                else
+                    fileSize = fileSize.toFixed(3) + " Bytes uploaded";
+
+
+                $("#" + _uploadingFileId).find('.span-info').text(fileSize);
+
+            }
+            else {
+                console.error('fileuploaderprogresser2 got here 4');
+
+                _progressBar.find(".sr-only").text("" + percentComplete + "% Uploaded");
+                _progressBar.addClass("progress-bar-success").removeClass("progress-bar-warning");
+                $("#" + _uploadingFileId).find('span').css("color", "white");
+                $("#" + _uploadingFileId).find('.span-info').text('');
+            }
+        }
+    }
+
+    function fileAttachedFiles_onChange(_fileUploader) {
+        var _htmlSelectFiles = "";
+
+        if (_fileUploader.files.length > 0) {
+            for (var fi = 0; fi < _fileUploader.files.length; fi++) {
+                var fileName = _fileUploader.files[fi].name;
+                var displayfileName = fileName.length > 40 ? fileName.substring(0, 25) + '...' + fileName.substring(fileName.length - 15) : fileName;
+                var fileSize = _fileUploader.files[fi].size / 1024;
+
+                if (fileSize > 1023)
+                    fileSize = (fileSize / 1024).toFixed(2) + " MB";
+                else
+                    fileSize = fileSize.toFixed(2) + " KB";
+
+                displayfileName = displayfileName + " (" + fileSize + ")";
+
+                var htmlProgressBar = "<div class='progress no-margin'>" +
+                    "  <div class='progress-bar progress-bar-warning progress-bar-striped' role='progressbar' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100' style='width: 0%'>" +
+                    "    <span class='sr-only'>" + 0 + "% Complete (Still uploading)</span>" +
+                    "  </div>" +
+                    " <span style='padding-left: 6px;position: absolute;left: 30px;color: darkred;'>" + displayfileName + "<span class='span-info small' style='padding-left: 10px;'></span></span>" +
+                    "</div>";
+
+                console.error('fi ' + fi);
+                _htmlSelectFiles = _htmlSelectFiles + "<li id='li-file-" + fi + "' style='margin-bottom: 6px;'> " + htmlProgressBar + "</li>";
+                //_htmlSelectFiles = _htmlSelectFiles + "<li id='" + fileName + "' > " + displayfileName + " (" + fileSize + ") <div class='progessbarhere'></div></li>";
+
+
+
+            }
+        }
+
+        $("#olSelectFiles").html(_htmlSelectFiles);
+    }
+
+    function fileuploaderprogresser(evt, _uploadingFileId) {
+        var testTisObj = this;
+
+        if (evt.lengthComputable) {
+            var percentComplete = evt.loaded / evt.total;
+            percentComplete = parseInt(percentComplete * 100);
+            //var $link = $('.' + ids);
+            //var $img = $link.find('i');
+            //$link.html('Uploading..(' + percentComplete + '%)');
+            //$link.append($img);
+
+            //var _progressBar = $("#olSelectFiles").find("#progessbarhere").find(".progress-bar");
+            var _progressBar = $("#olSelectFiles").find("#" + _uploadingFileId).find(".progress-bar");
+            if (_progressBar.length == 0) {
+                var htmlProgressBar = "<div class='progress no-margin'>" +
+                    "  <div class='progress-bar progress-bar-warning progress-bar-striped' role='progressbar' aria-valuenow='" + percentComplete + "' aria-valuemin='0' aria-valuemax='100' style='width: " + percentComplete + "%'>" +
+                    "    <span class='sr-only'>" + percentComplete + "% Complete (Still uploading)</span>" +
+                    "  </div>" +
+                    "</div>";
+
+                //$("#olSelectFiles").find(".progessbarhere").html(htmlProgressBar);
+                $("#olSelectFiles").find("#" + _uploadingFileId).html(htmlProgressBar);
+            }
+            else {
+                _progressBar.css("width", percentComplete + '%');
+                if (percentComplete < 100) {
+                    _progressBar.find(".sr-only").text("" + percentComplete + "% Complete (Still uploading)");
+
+                    var fileSize = evt.loaded / 1024;
+
+                    if (fileSize > 1023)
+                        fileSize = (fileSize / 1024).toFixed(3) + " MB uploaded";
+                    else
+                        fileSize = fileSize.toFixed(3) + " KB uploaded";
+
+
+                    $("#" + _uploadingFileId).find('.span-info').text(fileSize);
+
+                }
+                else {
+                    _progressBar.find(".sr-only").text("" + percentComplete + "% Uploaded");
+                    _progressBar.addClass("progress-bar-success").removeClass("progress-bar-warning");
+                    $("#" + _uploadingFileId).find('span').css("color", "white");
+                    $("#" + _uploadingFileId).find('.span-info').text('');
+                }
+            }
+
+        }
+    }
+
+    function deleteArtworkAttachment(_recordID) {
+
+
+        var _confirmResult = confirm("Are you sure you want to delete this Attachment?");
+        if (_confirmResult == true) {
+            showLoader();
+            GetSPListItems("ArtworkAttachments", _recordID, '').done(function (data) {
+
+                if (data && data.d) {
+                    deleteItem("ArtworkAttachments", data.d).done(function (data) {
+                        alert('Attachment has been deleted successfully');
+
+                        //var _hid_ProductId = $("#divModal-LotReleased").find('#hid_ID').val();
+                        bindAttachment(_recordID, 'edit');
+
+                        RequestEnded();
+                        hideLoader();
+                    });
+                }
+
+            }).fail(function (jqXHR, textStatus) {
+
+                alert("Artwork Deleting Fail! \n\nDetails\n" + jqXHR.responseJSON.error.message.value);
+                RequestEnded();
+                hideLoader();
+            });
+        }
+
+    }
+
+
+
+    function downloadDocument(_fileId) {
+
+        var listName = 'ArtworkAttachments';
+        var apiURL = _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('" + listName + "')/items/GetById(" + _fileId + ")/file"
+
+        $.ajax({
+            url: apiURL,
+            type: "GET",
+            async: false,
+            headers: {
+                "Accept": "application/json; odata=verbose",
+            },
+            success: function (dataFileInfo) {
+
+                if (dataFileInfo.d) {
+
+                    var fileURL = location.origin + dataFileInfo.d.ServerRelativeUrl;
+                    downloadFunction(fileURL);
+                }
+
+            },
+            error: function (error) {
+                console.log("Error on getting file info", error);
+
+                RequestEnded();
+            }
+        });
+    }
+
+
+    function downloadFunction(url) {
+        var file_path = url;
+        var a = document.createElement('A');
+        a.href = file_path;
+        a.download = file_path.substr(file_path.lastIndexOf('/') + 1);
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+    }
+
+</script>
+
+
+<script type="text/javascript">
+
+    function bindShareDocumentUsers() {
+
+        var template = "<tr id='tr_UserID'>" +
+            "<td>" +
+            "<input type='checkbox' class='chkItem' />" +
+            "<span class='hide' id='spanUser_ID'>UserID</span>" +
+            "<span class='hide' id='spanShareWith'>UserLoginName</span>" +
+            "</td>" +
+            "<td>" +
+            "<span class='news_cls'>UserName</span>" +
+            "</td>" +
+            "<td>" +
+            "<span class='dep_cls1' id='td_usertype'>UserType</span>" +
+            "</td>" +
+            "<td>" +
+            "<span class='type_cls'>EmailAddress</span>" +
+            "</td>" +
+            "<td>" +
+            "<span class='type_flag'>IsActive</span>" +
+            "</td>" +
+            "</tr>";
+
+
+        var isActiveFilter = "IsActive eq '1' and IsDeleted eq '0'&$top=5000&$select=Id,Title,Email,UserType,IsActive,LoginIDId";
+
+        GetSPListItems("Users", 0, isActiveFilter)
+            .done(function (data) {
+
+
+                if (data.d && data.d.results.length > 0) {
+
+                    for (var _u = 0; _u < data.d.results.length; _u++) {
+                        var _thisUserItem = data.d.results[_u];
+                        //if (_thisUserItem.Id != currentUserCustomInfo.Id)
+                        {
+
+                            var html = template;
+
+                            var _UserType = _thisUserItem.UserType;
+                            var _IsActive = _thisUserItem.IsActive == true ? 'Active' : 'In-Active';
+
+
+                            html = html.replace(/UserID/g, _thisUserItem.Id);
+                            html = html.replace(/UserLoginName/g, _thisUserItem.LoginIDId);
+                            html = html.replace(/UserName/g, _thisUserItem.Title);
+                            html = html.replace(/EmailAddress/g, _thisUserItem.Email);
+                            html = html.replace(/UserType/g, _UserType);
+                            html = html.replace(/IsActive/g, _IsActive);
+
+
+                            $("#tbluser>tbody").append(html);
+                        }
+                    }
+                }
+
+                $("#tbluser").DataTable({
+                    destroy: true
+                });
+
+            });
+    }
+    function openShareWindow(_id, _fileId, _name) {
+        var _DocID = 0;
+
+        if (Number(_fileId) > 0) {
+            _DocID = _fileId;
+        }
+
+
+        if (_DocID > 0) {
+
+            $('#hid_docid_shared').val(_DocID);
+            $("#tbluser>tbody").find("input[type='checkbox']").prop('checked', false); // reset all selected check boxes
+
+            $('#div_DocName').html("<b>Name:</b> " + _name);
+            $('#div_DocNumberVersion').html("");
+
+            $('#divModal-ShareDocument').find(".modal-title").text('Share: ' + _name);
+
+            $('#divModal-ShareDocument').modal('show');
+
+            _needtoReopenthisWindow = $("#divModal-ArtworkDetails");
+        }
+        return false;
+    }
+    function checkAll(_control) {
+        if ($(_control).prop('checked') == true) {
+            $("#tbluser>tbody").find("input[type='checkbox']").prop('checked', true);
+        } else {
+            $("#tbluser>tbody").find("input[type='checkbox']").prop('checked', false);
+        }
+    }
+
+    //  user shared document section
+    function SharedDocWithuser() {
+
+        var listName = "ArtworkShare";
+
+        var flag = false;
+        var id_ = "";
+
+        var docShareSuccessIndex = 0;
+
+        $("#tbluser>tbody").find("input[type='checkbox']:checked").each(function (a, item) {
+            var row = $($(item).parents('tr').first());
+
+            docShareSuccessIndex++;
+
+            var obj = {};
+            obj.Title = "";
+            obj.ArtworkLookupId = $("#hid_ID").val();
+            obj.DocumentLookupId = $('#hid_docid_shared').val();
+            obj.UserLookupId = row.find("#spanUser_ID").text();
+
+
+            InsertIntoSPList(listName, obj).done(function () {
+                docShareSuccessIndex--;
+                if (docShareSuccessIndex == 0) {
+                    alert("Document has been shared by all selected user(s)!");
+
+                    $('#divModal-ShareDocument').modal('hide');
+                }
+
+            }).fail(function () {
+                docShareSuccessIndex--;
+            });
+
+            flag = true;
+        });
+
+
+        if (flag) {
+
+        }
+        else {
+            alert('Please select atlest a user to share with!');
+        }
+        return false;
+    }
+
+</script>
+
+<!--  Notification  -->
+<script type="text/javascript">
+
+
+
+
+    function notificationMarkAsSeen() {
+        try {
+
+            var _aid = GetUrlKeyValue('aid');
+            var _notid = GetUrlKeyValue('notid');
+
+            if (Number(_notid) > 0 && Number(_aid) > 0) {
+
+                tblArtworkDataTable.column(0).visible(true);
+                $('#tblArtwork').find(".artwork-id").val("-" + _aid + "-").trigger('change');
+                tblArtworkDataTable.column(0).visible(false);
+
+
+                markAsRead(_notid);
+
+            }
+
+
+            /*var _ProductId = $('#hid_ID').val();
+
+            if (Number(_ProductId) > 0) {
+
+                var notificationsJson = {
+                    RecordId: "" + _ProductId
+                };
+
+                notificationsJson.ModuleType = Module.Artwork;
+
+
+                var filterNomenclature = "HasSeen eq 0 and NotifyToUsersId eq " + _spPageContextInfo.userId + " and ModuleType eq '" + notificationsJson.ModuleType + "' and RecordId eq '" + notificationsJson.RecordId + "' and Action ne 'Submit'&$top=1000&$select=Id,Title,RecordId,ProductLookupId,ArtworkLookupId,CredentialLookupId,Action,HasSeen,SeenOn,ModuleType,Created";
+                GetSPListItems("Notifications", 0, filterNomenclature)
+                 .done(function (data) {
+
+                     var response = data.d.results;
+                     for (var i = 0; i < response.length ; i++) {
+                         if (Number(response[i].Id) > 0) {
+                             markAsRead(response[i].Id);
+                         }
+                     }
+                 });
+
+            }*/
+
+        } catch (ex2) {
+            console.log(ex2);
+        }
+    }
+
+
+    function sendNotification() {
+
+
+        /*
+
+Title   Single line of text
+Modified	Date and Time
+Created	Date and Time
+Action	Single line of text
+NotifyToLookup	Lookup
+NotifyToUsers	Person or Group
+ActionByUser	Lookup
+HasSeen	Yes/No
+SeenOn	Date and Time
+RecordId	Single line of text
+ProductLookup	Lookup
+ArtworkLookup	Lookup
+CredentialLookup	Lookup
+ModuleType	Single line of text
+Created By	Person or Group
+Modified By	Person or Group
+
+            */
+
+        var sendNotifiaction = false;
+
+        var notificationText = "";
+        var notificationToUserLookupIds = [];
+        var notificationToSPUserIds = [];
+        var notificationAsGroup = false;
+
+
+
+        notificationText = "An artwork has been submitted and waiting for your approval!";
+
+        var profileIdLst = [];
+        var filterProfileQuery = "CanApprove eq 1 and ModuleType eq '" + Module.Artwork + "' and CountryLookupId eq " + $("#divModal-ArtworkDetails").find('#ddlCountry').val() + "&$top=5000&$select=Id,ProfileLookupId";
+        GetSPListItems("ProfileRights", 0, filterProfileQuery, false)
+            .done(function (data) {
+                if (data.d.results.length > 0) {
+                    data.d.results.forEach(function (pdetails) {
+
+                        if (Number(pdetails.ProfileLookupId) > 0) {
+
+                            profileIdLst.push(pdetails.ProfileLookupId);
+
+                        }
+                    });
+
+                }
+            });
+
+        var filterQuery = "IsActive eq 1&$top=5000&$select=Id,LoginIDId,ProfileLookupId";
+        GetSPListItems("Users", 0, filterQuery, false)
+            .done(function (data) {
+                if (data.d.results.length > 0) {
+
+                    data.d.results.forEach(function (uid) {
+                        if (Number(uid.LoginIDId) > 0 && Number(uid.LoginIDId) != _spPageContextInfo.userId) {
+                            if (uid.ProfileLookupId && uid.ProfileLookupId != null && uid.ProfileLookupId.results != null && uid.ProfileLookupId.results.length > 0) {
+                                uid.ProfileLookupId.results.forEach(function (profileId) {
+
+                                    if (Number(profileId) > 0 && profileIdLst.includes(profileId)) {
+
+                                        notificationToUserLookupIds.push(uid.Id);
+                                        notificationToSPUserIds.push(uid.LoginIDId);
+
+                                        sendNotifiaction = true;
+                                        notificationAsGroup = true;
+                                    }
+
+                                });
+                            }
+                        }
+                    });
+
+                }
+            });
+
+
+
+
+        if (sendNotifiaction == true) {
+
+            if (notificationAsGroup == true) {
+
+                var notificationsJson = {
+                    Title: notificationText,
+                    RecordId: $('#hid_ID').val(),
+                    ArtworkLookupId: $('#hid_ID').val(),
+                    Action: "Submit",
+                    ActionByUserId: currentUserCustomInfo.Id,
+                    NotifyToUsersId: { 'results': notificationToSPUserIds },
+                    NotifyToLookupId: { 'results': notificationToUserLookupIds },
+                    HasSeen: false,
+                    ModuleType: Module.Artwork
+
+                }
+
+                InsertIntoSPList("Notifications", notificationsJson).done(function (data) {
+                    console.log("Notifications Saved.");
+                }).fail(onerror);
+
+            }
+        }
+    }
+
+</script>
+
+<!--<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>-->
+
+<script type="text/javascript">
+    ExecuteOrDelayUntilScriptLoaded(function () {
+        var scriptbase = _spPageContextInfo.siteAbsoluteUrl + "/_layouts/15/";
+        console.error("scriptbase: " + scriptbase);
+        // Load the js files and continue to the successHandler
+        $.getScript(scriptbase + "SP.RequestExecutor.js", function () {
+            console.log("request executor is now loaded");
+            // Logic here
+        });
+    }, "sp.js");
+
+    var siteUrl = _spPageContextInfo.webAbsoluteUrl;
+    console.error("siteUrl: " + siteUrl);
+    var documentLibrary = "Shared Documents";
+    var fileName = "dcomts";
+    var currentDlg = null;
+    var siteRelativeUrl = _spPageContextInfo.webServerRelativeUrl != "/" ? _spPageContextInfo.webServerRelativeUrl : "";
+    console.error("siteRelativeUrl: " + siteRelativeUrl);
+    var fileUpload = function (file, documentLibrary, fileName) {
+        return new Promise((resolve, reject) => {
+            this.createDummyFile("dummy", "Shared Documents").then(result => {
+                var dlgTitle;
+                var dlgMsg;
+                var dlgWidth;
+                var dlgHeight;
+                dlgTitle = "Uploading Your File...";
+                dlgMsg = "<br />Please wait whilst your file is being uploaded<br /><br />Please do not close your browser window.";
+                dlgHeight = 200;
+                dlgWidth = 500;
+
+                if (currentDlg == null) {
+                    currentDlg = SP.UI.ModalDialog.showWaitScreenWithNoClose(dlgTitle, dlgMsg, dlgHeight, dlgWidth);
+                }
+                var file = jQuery("#AttachmentUploadField")[0].files[0];
+                let fr = new FileReader();
+                let offset = 0;
+                // the total file size in bytes...
+                let total = file.size;
+                // 1MB Chunks as represented in bytes (if the file is less than a MB, seperate it into two chunks of 80% and 20% the size)...
+                let length = parseInt(1000000) > total ? Math.round(total * 0.8) : parseInt(1000000);
+                let chunks = [];
+                //reads in the file using the fileReader HTML5 API (as an ArrayBuffer) - readAsBinaryString is not available in IE!
+                fr.readAsArrayBuffer(file);
+                fr.onload = (evt) => {
+                    while (offset < total) {
+                        //if we are dealing with the final chunk, we need to know...
+                        if (offset + length > total) {
+                            length = total - offset;
+                        }
+                        //work out the chunks that need to be processed and the associated REST method (start, continue or finish)
+                        chunks.push({
+                            offset,
+                            length,
+                            method: this.getUploadMethod(offset, length, total)
+                        });
+                        offset += length;
+                    }
+                    //each chunk is worth a percentage of the total size of the file...
+                    const chunkPercentage = (total / chunks.length) / total * 100;
+                    if (chunks.length > 0) {
+                        //the unique guid identifier to be used throughout the upload session
+                        const id = this.guid();
+                        var file = jQuery("#AttachmentUploadField")[0].files[0];
+                        //Start the upload - send the data to S
+                        this.uploadFile(evt.target.result, id, "Shared Documents", file.name, chunks, 0, 0, chunkPercentage, resolve, reject);
+                    }
+                };
+            })
+        });
+    }
+
+    /*function createDummyFile(fileName, libraryName) {
+        return new Promise((resolve, reject) => {
+            // Construct the endpoint - The GetList method is available for SharePoint Online only.
+            var serverRelativeUrlToFolder = "decodedurl='" + this.siteRelativeUrl + "/" + libraryName + "'";
+            console.error("serverRelativeUrlToFolder: " + serverRelativeUrlToFolder);
+            var file = jQuery("#AttachmentUploadField")[0].files[0];
+            currentDlg = null;
+            var endpoint = this.siteUrl + "/_api/Web/GetFolderByServerRelativePath(" + serverRelativeUrlToFolder + ")/files" + "/add(overwrite=true, url='" + file.name + "')"
+            const headers = {
+                "accept": "application/json;odata=verbose"
+            };
+            this.executeAsync(endpoint, this.convertDataBinaryString(2), headers).then(file => resolve(true)).catch(err => reject(err));
+        });
+    }*/
+    // Base64 - this method converts the blob arrayBuffer into a binary string to send in the REST request
+    function convertDataBinaryString(data) {
+        let fileData = '';
+        let byteArray = new Uint8Array(data);
+        for (var i = 0; i < byteArray.byteLength; i++) {
+            fileData += String.fromCharCode(byteArray[i]);
+        }
+        return fileData;
+    }
+    /*function executeAsync(endPointUrl, data, requestHeaders) {
+        console.error('executeAsync->requestHeaders: ' + requestHeaders);
+        return new Promise((resolve, reject) => {
+            // using a utils function we would get the APP WEB url value and pass it into the constructor...
+            let executor = new SP.RequestExecutor(this.siteUrl);
+            // Send the request.
+            executor.executeAsync({
+                url: endPointUrl,
+                method: "POST",
+                body: data,
+                binaryStringRequestBody: true,
+                headers: requestHeaders,
+                success: offset => resolve(offset),
+                error: err => reject(err.responseText)
+            });
+        });
+    }*/
+    //this method sets up the REST request and then sends the chunk of file along with the unique indentifier (uploadId)
+    /*function uploadFileChunk(id, libraryPath, fileName, chunk, data, byteOffset) {
+        return new Promise((resolve, reject) => {
+            let offset = chunk.offset === 0 ? '' : ',fileOffset=' + chunk.offset;
+            //parameterising the components of this endpoint avoids the max url length problem in SP (Querystring parameters are not included in this length)
+            let endpoint = this.siteUrl + "/_api/web/getfilebyserverrelativeurl('" + this.siteRelativeUrl + "/" + libraryPath + "/" + fileName + "')/" + chunk.method + "(uploadId=guid'" + id + "'" + offset + ")";
+            console.error('uploadFileChunk->endpoint: ' + endpoint);
+            const headers = {
+                "Accept": "application/json; odata=verbose",
+                "Content-Type": "application/octet-stream"
+            };
+            this.executeAsync(endpoint, data, headers).then(offset => resolve(offset)).catch(err => reject(err));
+        });
+    }
+    //the primary method that resursively calls to get the chunks and upload them to the library (to make the complete file)
+    function uploadFile(result, id, libraryPath, fileName, chunks, index, byteOffset, chunkPercentage, resolve, reject) {
+        //we slice the file blob into the chunk we need to send in this request (byteOffset tells us the start position)
+        const data = this.convertFileToBlobChunks(result, byteOffset, chunks[index]);
+        //upload the chunk to the server using REST, using the unique upload guid as the identifier
+        this.uploadFileChunk(id, libraryPath, fileName, chunks[index], data, byteOffset).then(value => {
+            const isFinished = index === chunks.length - 1;
+            index += 1;
+            console.error('uploadFile->index: ' + index);
+            const percentageComplete = isFinished ? 100 : Math.round((index * chunkPercentage));
+            //More chunks to process before the file is finished, continue
+            if (index < chunks.length) {
+                this.uploadFile(result, id, libraryPath, fileName, chunks, index, byteOffset, chunkPercentage, resolve, reject);
+            } else {
+                resolve(value);
+                if (currentDlg != null) {
+                    currentDlg.close();
+                }
+            }
+        }).catch(err => {
+            console.log('Error in uploadFileChunk! ' + err);
+            reject(err);
+        });
+    }
+    //Helper method - depending on what chunk of data we are dealing with, we need to use the correct REST method...
+    function getUploadMethod(offset, length, total) {
+        if (offset + length + 1 > total) {
+            return 'finishupload';
+        } else if (offset === 0) {
+            return 'startupload';
+        } else if (offset < total) {
+            return 'continueupload';
+        }
+        return null;
+    }*/
+    //this method slices the blob array buffer to the appropriate chunk and then calls off to get the BinaryString of that chunk
+    /*function convertFileToBlobChunks(result, byteOffset, chunkInfo) {
+        let arrayBuffer = result.slice(chunkInfo.offset, chunkInfo.offset + chunkInfo.length);
+        return this.convertDataBinaryString(arrayBuffer);
+    }*/
+    function guid() {
+        function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+        }
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+    }
+
+</script>

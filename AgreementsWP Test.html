@@ -1,0 +1,1598 @@
+﻿<!-- Bootstrap core CSS -->
+
+<link href="../Style%20Library/CustomStyleLibraries/chosen_v1.8.7/chosen.min.css?v=1.0" rel="stylesheet">
+<link href="../Style%20Library/CustomStyleLibraries/jquery-ui-datepicker/jquery-ui.min.css?v=1.0" rel="stylesheet">
+<link href="../Style%20Library/CustomStyleLibraries/bootstrap-3.3.7-dist/css/bootstrap.min.css?v=1.0" rel="stylesheet">
+<link href="../Style%20Library/CustomStyleLibraries/datatable/dataTables.bootstrap4.css?v=1.0" rel="stylesheet" />
+<link href="../Style%20Library/CustomStyleLibraries/datatable/dataTables.responsive.css?v=1.0" rel="stylesheet" />
+<link href="../Style%20Library/CustomStyleLibraries/datatable/dataTables.bootstrap4.min.css?v=1.0" rel="stylesheet" />
+
+<script src="../Style%20Library/CustomStyleLibraries/jquery-ui-datepicker/jquery-ui.min.js?v=1.0"></script>
+
+<script src="../Style%20Library/CustomStyleLibraries/bootstrap-3.3.7-dist/js/bootstrap.min.js?v=1.0"></script>
+<script src="../Style%20Library/CustomStyleLibraries/datatable/jquery.dataTables.min.js?v=1.0"></script>
+<script src="../Style%20Library/CustomStyleLibraries/datatable/dataTables.bootstrap.min.js?v=1.0"></script>
+<script src="../Style%20Library/CustomStyleLibraries/datatable/dataTables.responsive.js?v=1.0"></script>
+
+<script src="../Style%20Library/CustomStyleLibraries/chosen_v1.8.7/chosen.jquery.min.js?v=1.0"></script>
+
+
+
+<style type="text/css">
+    .column_filter {
+        width: 100% !important;
+    }
+</style>
+
+<div style="margin-top: 0px;">
+
+    <div class="row">
+        <div class="col-md-12">
+            <button type="button" class="btn btn-primary pull-right" id="btnAddAgreement" onclick="openAgreement(0, 'Create')"><i class="glyphicon glyphicon-plus"></i> Create Agreement</button>
+        </div>
+    </div>
+
+    <!--<div class="panel panel-default">
+        <div class="panel-body">-->
+
+
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-md-12">
+
+            <table id="tblAgreement" class="table table-striped" style="width: 100%">
+                <thead class="alert alert-info h5">
+
+                    <tr>
+
+                        <th class="th-sm" data-column='0'>
+                            <select id="ddlAgreementCompany-filter" class='column_filter form-control' onchange='SearchCol(1)'></select> 
+                        </th>
+                        <th class="th-sm" data-column='1'> <input type='text' class='column_filter form-control' onkeyup='SearchCol(1)' autocomplete="off" /></th>
+                        <th class="th-sm" data-column='2'>
+
+                            <select class='column_filter form-control' onchange='SearchCol(2)'>
+                                <option value="">All</option>
+                                <option value="Local">Local</option>
+                                <option value="International">International</option>
+                            </select>   
+                        </th>
+                        <th class="th-sm" data-column='3'>
+
+                            <select class='column_filter form-control' onchange='SearchCol(3)'>
+                                <option value="">All</option>
+                                <option value="CDA/NDA">CDA/NDA</option>
+                                <option value="Supply & Distribution">Supply & Distribution</option>
+                                <option value="Termination">Termination</option>
+                                <option value="Renewal">Renewal</option>
+                                <option value="Addendum">Addendum</option>
+                                <option value="Contract Manufacturing">Contract Manufacturing</option>
+                                <option value="Term Sheet">Term Sheet</option>
+                                <option value="MoU">MoU</option>
+                                <option value="Quality">Quality</option>
+                                <option value="Regulatory">Regulatory</option>
+                                <option value="Others">Others</option>
+                            </select> 
+                        </th>
+                        <th class="th-sm" data-column='4'> <input type='text' class='column_filter form-control date-picker-filter' onkeyup='SearchCol(4)' onchange='SearchCol(4)' autocomplete="off" /></th>
+                        <th class="th-sm" data-column='5'> <input type='text' class='column_filter form-control date-picker-filter' onkeyup='SearchCol(5)' onchange='SearchCol(5)' autocomplete="off" /></th>
+                        <th class="th-sm" data-column='6'>
+
+                            <select class='column_filter form-control' onchange='SearchCol(6)'>
+                                <option value="">All</option>
+                                <option value="true">Active</option>
+                                <option value="false">In Active</option>
+                            </select> 
+                             
+                        </th>
+                        <th class="th-sm" data-column='7'> </th>
+
+                    </tr>
+                    <tr>
+                        <th style="text-align: left" class="th-sm">
+                            Company
+                        </th>
+                        <th class=" th-sm">
+                            Business Partner
+                        </th>
+                        <th class="th-sm">
+                            Type
+                        </th>
+                        <th class="th-sm">
+                            Category
+                        </th>
+                        <th class="th-sm">
+                            Effective Date
+                        </th>
+                        <th class="th-sm">
+                            Expiry Date
+                        </th>
+                        <th class="th-sm">
+                            Status
+                        </th>
+                        <th class="th-sm" align='center' style="text-align:center;">
+                            Action
+                        </th>
+                    </tr>
+
+                </thead>
+
+                <tbody></tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+
+    <!--</div>
+    </div>-->
+
+</div>
+
+<!-- Start PackSize Modal -->
+<div class="modal fade" id="divModal-Agreement" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" id="mod_mesga">&times;</span>
+                </button>
+                <h2 class="modal-title">Add Agreement</h2>
+            </div>
+            <div class="modal-body">
+                <input type='hidden' id='hid_AgreementId' />
+                <div>
+
+
+                    <div class="row">
+
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="form-label-group">
+                                    <label>Company<i class="text-danger">*</i></label>
+                                    <select id="ddlAgreementCompany" class="form-control"></select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <div class="form-label-group">
+                                    <label>Name of Business Partner<i class="text-danger">*</i></label>
+                                    <input type="text" id="txtBusinessPartner" class="form-control" maxlength="255" />
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="row">
+
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="form-label-group">
+                                    <label>Type</label>
+                                    <select id="ddlAgreementType" class="form-control">
+                                        <option value="">-- None --</option>
+                                        <option value="Local">Local</option>
+                                        <option value="International">International</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="form-label-group">
+                                    <label>Category</label>
+                                    <select id="ddlCategory" class="form-control" onchange="onSelectAgreementCategory()">
+                                        <option value="">-- None --</option>
+                                        <option value="CDA/NDA">CDA/NDA</option>
+                                        <option value="Supply & Distribution">Supply & Distribution</option>
+                                        <option value="Termination">Termination</option>
+                                        <option value="Renewal">Renewal</option>
+                                        <option value="Addendum">Addendum</option>
+                                        <option value="Contract Manufacturing">Contract Manufacturing</option>
+                                        <option value="Term Sheet">Term Sheet</option>
+                                        <option value="MoU">MoU</option>
+                                        <option value="Quality">Quality</option>
+                                        <option value="Regulatory">Regulatory</option>
+                                        <option value="Others">Others</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-4" style="display:none;">
+                            <div class="form-group">
+                                <div class="form-label-group">
+                                    <label>Category (Others)<i class="text-danger">*</i></label>
+                                    <input type="text" id="txtTypeOther" class="form-control" maxlength="255" />
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="form-label-group">
+                                    <label>Effective Date<i class="text-danger">*</i> </label>
+                                    <input type="text" id="txtEffectiveDate" class="form-control datepicker" maxlength="15" autocomplete="off" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="form-label-group">
+                                    <label>Date of Expiry<i class="text-danger">*</i> </label>
+                                    <input type="text" id="txtDateOfExpiry" class="form-control datepicker" maxlength="15" autocomplete="off" />
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="form-label-group">
+                                    <label>Status</label>
+                                    <select id="ddlStatus" class="form-control">
+                                        <option value="">-- None --</option>
+                                        <option value="Active">Active</option>
+                                        <option value="In Active">In Active</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="form-label-group">
+                                    <label>Purpose </label>
+                                    <textarea id="txtPurpose" class="form-control" rows="4" cols="20"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+
+
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" id="btnSave" class="btn btn-success" onclick="saveAgreement();"><i class="glyphicon glyphicon-floppy-disk"></i> Save</button>
+
+                    <button type="button" id="btnFinish" class="btn btn-success" style="display: none;" onclick="saveAgreement('finish');"><i class="glyphicon glyphicon-ok"></i> Finish</button>
+
+
+
+                    <div class="row" id="divVariation">
+                        <div class="col-md-12">
+                            <hr />
+                            <h4 class="pull-left">Variation</h4>
+                            <a id="btnAddVariation" href="#" title="Add Variation" onclick="openVariationSPDailogBox(0)" class="btn btn-info btn-sm pull-right h5"><i class="glyphicon glyphicon-plus"></i>&nbsp;Add Variation</a>
+
+                        </div>
+                        <div class="col-md-12 text-left">
+
+                            <table id="tblVariation" class="table table-striped small" style="width: 100%">
+                                <thead class="alert alert-info h5">
+
+                                    <tr>
+                                        <th class="th-sm">
+                                            #
+                                        </th>
+                                        <th class="th-sm">
+                                            Variation Title
+                                        </th>
+                                        <th class="th-sm">
+                                            Attachment Title
+                                        </th>
+                                        <th class="th-sm" align='center' style='text-align:center;'>
+                                            Action
+                                        </th>
+                                    </tr>
+
+                                </thead>
+
+                                <tbody><tr><td colspan="6">No variation attachted!</td></tr></tbody>
+
+                            </table>
+
+
+                        </div>
+                    </div>
+
+
+                    <div class="row" id="divAttachment">
+                        <div class="col-md-12">
+                            <hr />
+                            <h4 class="pull-left">Attachment</h4>
+                            <a id="btnAddAttachment" href="#" title="Add Attachment" onclick="openAddAttachment(0)" class="btn btn-info btn-sm pull-right h5"><i class="glyphicon glyphicon-plus"></i>&nbsp;Add Attachment - 1</a>
+
+                            <a id="btnAddFolder" href="#" title="Add Folder" onclick="openFolderSPDialog()" class="btn btn-info btn-sm pull-right h5" style="margin-right: 8px;"><i class="glyphicon glyphicon-plus"></i>&nbsp;Add Folder</a>
+                        </div>
+                        <div class="col-md-12 text-left">
+
+                            <table id="tblAttachment" class="table table-striped small" style="width: 100%">
+                                <thead class="alert alert-info h5">
+
+                                    <tr>
+                                        <th class="th-sm">
+                                            #
+                                        </th>
+                                        <th class="th-sm">
+                                            Folder Name
+                                        </th>
+                                        <th class="th-sm">
+                                            File Name
+                                        </th>
+                                        <th class="th-sm">
+                                            Updated Date
+                                        </th>
+                                        <th class="th-sm">
+                                            Updated By
+                                        </th>
+                                        <th class="th-sm" align='center' style='text-align:center;'>
+                                            Action
+                                        </th>
+                                    </tr>
+
+                                </thead>
+
+                                <tbody><tr><td colspan="6">No attachment attachted!</td></tr></tbody>
+
+                            </table>
+
+
+                        </div>
+                    </div>
+
+
+                    <div class="row" id="divActionLogs" style="display:none;">
+                        <div class="col-md-12  text-left">
+
+                            <hr class="no-margin" />
+
+                            <h4 class="pull-left">Action History</h4>
+
+                            <div>
+
+                                <table id="tblActionHistory" class="table table-striped small" style="width: 100%">
+                                    <thead class="alert alert-info h5">
+                                        <!--style="background-color: #336699; color: white"-->
+
+                                        <tr>
+                                            <th class="th-sm">
+                                                Action On
+                                            </th>
+                                            <th style="text-align: left" class="th-sm">
+                                                Action By
+                                            </th>
+                                            <th class="th-sm">
+                                                Action Taken
+                                            </th>
+                                            <th class="th-sm" style="width:57%;">
+                                                Comment
+                                            </th>
+                                        </tr>
+
+                                    </thead>
+
+                                    <tbody></tbody>
+
+                                </table>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- End PackSize Modal -->
+
+<!-- Start Attachment Modal -->
+<div class="modal fade" id="divModal-CompanyCredentialsAttachment" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" id="mod_mesga">&times;</span>
+                </button>
+                <h2 class="modal-title">Add Attachment - 2</h2>
+            </div>
+            <div class="modal-body">
+                <input type='hidden' id='hid_CompanyCredentialsId' />
+
+                <div>
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="form-label-group">
+                                    <label>Folder<i class="text-danger hide">*</i></label>
+                                    <select id="ddlFolders" class="form-control"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="form-label-group">
+                                    <label>File Attachment<i class="text-danger">*</i> </label>
+                                    <input type="file" id="fileAttachedFiles" class="form-control" multiple="multiple" onchange="fileAttachedFiles_onChange(this)" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <ol id="olSelectFiles" style="padding-left: 13px;"></ol>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="btnSave" class="btn btn-success" onclick="saveAttachment();"><i class="glyphicon glyphicon-floppy-disk"></i> Save Attachment</button>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<!-- End Attachment Modal -->
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        $('.datepicker').not(".hasDatepicker").datepicker({
+            onSelect: function (dateText, datepickerObj) {
+                console.log("Selected date: " + dateText + "; input's current value: " + this.value, datepickerObj);
+            }
+        });
+
+        $('.date-picker-filter').datepicker({
+            dateFormat: "d-M-yy",
+            onSelect: function (dateText, datepickerObj) {
+                console.log("Selected date: " + dateText + "; input's current value: " + this.value, datepickerObj);
+                datepickerObj.input.trigger('change');
+            }
+        });
+
+        bindAgreementCompanyDDLs();
+
+        var product_ID = 0;
+        try {
+            product_ID = $("#hid_AgreementId").val();
+        } catch (a) { }
+
+        bindAgreementTable(product_ID);
+
+
+    });
+
+
+
+    function openAddAttachment(_id) {
+
+var modalWindow = $("#divModal-CompanyCredentialsAttachment");
+
+var _CompanyCredentialsId = $("#divModal-Agreement").find('#hid_AgreementId').val();
+
+// reset All controls
+modalWindow.find("select,input[type='text'],input[type='hidden']").val('');
+modalWindow.find(".is-invalid").removeClass("is-invalid");
+modalWindow.find('#hid_CompanyCredentialsId').val(_CompanyCredentialsId);
+modalWindow.find('#ddlFolders').find('option').remove();
+
+if (_CompanyCredentialsId && Number(_CompanyCredentialsId) > 0) {
+    
+    var folderFilter = "AgreementLookupId eq " + _CompanyCredentialsId
+    GetSPListItems("CompanyCredentialsFolders", 0, folderFilter)
+        .done(function (folderData) {
+
+            modalWindow.find('#ddlFolders').append("<option value=''>" + " -- Select -- " + "</option>");
+
+            if (folderData && folderData.d && folderData.d.results && folderData.d.results.length > 0) {
+
+                folderData.d.results.forEach(function (_item) {
+                    var _optionfolderhtml = "<option value='" + _item.Id + "'>" + _item.Title + "</option>";
+
+                    modalWindow.find('#ddlFolders').append(_optionfolderhtml);
+                });
+                
+                //modalWindow.modal('show');
+
+                //_needtoReopenthisWindow = $("#divModal-CompanyCredentialsDetails");
+            } else {
+                //alert("No folder available for this CompanyCredentials!");
+            }
+
+
+            modalWindow.modal('show');
+
+            _needtoReopenthisWindow = $("#divModal-Agreement");
+
+        });
+
+}
+}
+
+function openFolderSPDialog() {
+
+var _CompanyCredentialsId = $("#divModal-Agreement").find('#hid_AgreementId').val();
+var queryString = "aid=" + _CompanyCredentialsId;
+var source = window.location.href;
+var sucMsg = "New Folder has been added successfully.";
+openNewItemDialog('CompanyCredentialsFolders', 'Add Folder', source, queryString, sucMsg, 650, false);
+
+}
+
+
+    function bindAgreementTable(_id) {
+        // Specify the Id of the Item that you want to fetch
+
+        if ($('#tblAgreement').hasClass("dataTable") == true) {
+            $('#tblAgreement').DataTable().destroy();
+        }
+        $('#tblAgreement>tbody').html('');
+
+
+        var idFilter = ""; //"IsDeleted eq 0"; //"IsActive eq 1";
+        if (Number(_id) > 0) {
+            idFilter = "ProductLookupId eq " + _id;
+        }
+
+
+        var filterProducts = idFilter + "&$select=ID,Title," +
+        "BusinessPartner," +
+        "AgreementType," +
+        "Category," +
+        "EffectiveDate," +
+        "ExpiryDate," +
+        "Status," +
+        "Purpose," +
+        "OtherType," +
+            "CompanyLookup/Id,CompanyLookup/Title,Created" +
+            "&$expand=CompanyLookup";
+
+        GetSPListItems("Agreements", 0, filterProducts)
+            .done(function (data) {
+
+                var response = data.d.results;
+                for (var i = 0; i < response.length ; i++) {
+
+                    var _item = response[i];
+
+                    //if (havePremission(Permission.VIEW, Module.Agreement, _item["CountryLookup"].Id) == true)
+                    if (havePremission(Permission.VIEW, Module.Agreement) == true) {
+
+                        var _statusText = "<span class='hide'>false</span>In-Active";
+
+                        if (_item.Status)
+                            _statusText = (_item.Status == "Active" ? "<span class='hide'>true</span>Active" : "<span class='hide'>false</span>In-Active");
+
+
+                        var newRow = "<tr id='" + _item["ID"] + "'>" +
+                            "<td>" + ((_item["CompanyLookup"]) ? _item["CompanyLookup"].Title : "") + "</td>" +
+                            "<td>" + _item["BusinessPartner"] + "</td>" +
+                            "<td>" + _item["AgreementType"] + "</td>" +
+                            "<td>" + (_item["Category"] == 'Others' ? _item["OtherType"] + " (Other)" : _item["Category"]) + "</td>" +
+                            "<td>" + toDisplayDate(_item["EffectiveDate"]) + "</td>" +
+                            "<td>" + toDisplayDate(_item["ExpiryDate"]) + "</td>" +
+                            "<td>" + _statusText + "</td>";
+
+                        var _actionButtonHTML = createActionDropdown(_item);
+
+                        newRow = newRow + "<td align='center' style='text-align:center;'>" + _actionButtonHTML + "</td>";
+                        newRow = newRow + "</tr>";
+
+                        $('#tblAgreement>tbody').append(newRow);
+                    }
+                }
+
+                if ($('#tblAgreement>tbody').find('tr').length == 0) {
+                    $('#tblAgreement>tbody').html('<tr><td colspan="7">No Agreement created!</td></tr>');
+                }
+
+
+                $('#tblAgreement').on('draw.dt', function () {
+                    $(".dataTables_filter").find('input').addClass('form-control input-sm');
+                    $(".dataTables_filter").addClass('hide');
+                });
+
+                $("#tblAgreement").DataTable();
+
+            });
+
+    }
+
+    function createActionDropdown(_item) {
+
+        var buttonAttr = "";
+
+        var _actionBtnHtml = "<div class='btn-group'>";
+        _actionBtnHtml += "  <button type='button' class='btn btn-primary dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' " + buttonAttr + ">        ";
+        _actionBtnHtml += "    Action <span class='caret'></span>";
+        _actionBtnHtml += "  </button>";
+        _actionBtnHtml += "  <ul class='dropdown-menu dropdown-menu-right'>";
+
+
+        _actionBtnHtml += "    <li class=''><a href='#' onclick='openAgreement(" + _item.Id + ",\"view\")' ><i class='glyphicon glyphicon-list-alt'></i>&nbsp;View</a></li>";
+
+        _actionBtnHtml += "    <li class=''><a href='#' onclick='openAgreement(" + _item.Id + ",\"edit\")' ><i class='glyphicon glyphicon-edit'></i>&nbsp;Edit</a></li>";
+
+        _actionBtnHtml += "    <li class=''><a href='#' onclick='deleteAgreement(" + _item.Id + ",\"delete\")' ><i class='glyphicon glyphicon-trash'></i>&nbsp;Delete</a></li>";
+
+        _actionBtnHtml += "  </ul>";
+        _actionBtnHtml += "</div>";
+
+
+
+        return _actionBtnHtml;
+    }
+
+    function openAgreement(_id, _mode) {
+
+        var modalWindow = $("#divModal-Agreement");
+
+
+        modalWindow.find(".modal-title").text('Create Agreement');
+
+        // reset All controls
+        modalWindow.find("select,input[type='text'],input[type='hidden'],textarea").val('');
+        modalWindow.find(".is-invalid").removeClass("is-invalid");
+
+        if (_mode == 'view') {
+            modalWindow.find(".modal-title").text('View Agreement');
+            modalWindow.find("#btnSave,#btnFinish").hide();
+            modalWindow.find('input,select,textarea').prop('disabled', true);
+
+            $("#btnAddVariation,#btnAddFolder,#btnAddAttachment").hide();
+            modalWindow.find("#divVariation,#divAttachment,#divActionLogs").show();
+        }
+        else if (_mode == 'edit') {
+            if (havePremission(Permission.UPLOAD, Module.Agreement) == true) {
+            modalWindow.find(".modal-title").text('Edit Agreement');
+            modalWindow.find("#btnSave,#btnFinish").show();
+            modalWindow.find('input,select,textarea').not("#txtGeneric,#txtStrength,#ddlDosageType").prop('disabled', false);
+
+            $("#btnAddVariation,#btnAddFolder,#btnAddAttachment").show();
+            modalWindow.find("#divVariation,#divAttachment,#divActionLogs").show();
+
+            }
+        }
+        else if (_mode == 'new') {
+            if (havePremission(Permission.UPLOAD, Module.Agreement) == true) {
+                modalWindow.find(".modal-title").text('Add New Agreement');
+                modalWindow.find("#btnSave").show();
+                modalWindow.find("#btnFinish").hide();
+                //modalWindow.find('input,select,textarea').not("#txtGeneric,#txtStrength,#ddlDosageType").prop('disabled', false); // it could be amended
+                modalWindow.find('input,select,textarea').prop('disabled', false);
+
+                
+                $("#btnAddVariation,#btnAddFolder,#btnAddAttachment").hide();
+                modalWindow.find("#divVariation,#divAttachment,#divActionLogs").hide();
+            }
+        }
+        else {
+            if (havePremission(Permission.UPLOAD, Module.Agreement) == true) {
+                modalWindow.find(".modal-title").text('Create Agreement');
+                modalWindow.find("#btnSave").show();
+                modalWindow.find("#btnFinish").hide();
+                modalWindow.find('input,select,textarea').not("#txtGeneric,#txtStrength,#ddlDosageType").prop('disabled', false);
+
+                modalWindow.find("#divVariation,#divAttachment,#divActionLogs").hide();
+            }
+        }
+
+       // modalWindow.find('#ddlManufacturingSite').trigger('chosen:updated');
+
+        if (_id && Number(_id) > 0) {
+
+            modalWindow.find('#hid_AgreementId').val(_id);
+
+
+            GetSPListItems("Agreements", _id, '')
+                .done(function (data) {
+
+                    var _item = data.d;
+                    if (_item) {
+
+                        modalWindow.find('#hid_AgreementId').val(_item.Id);
+
+
+
+
+                        modalWindow.find('#ddlAgreementCompany').val(_item.CompanyLookupId);
+                        modalWindow.find('#txtBusinessPartner').val(_item.BusinessPartner);
+                        modalWindow.find('#ddlAgreementType').val(_item.AgreementType);
+                        modalWindow.find('#ddlCategory').val(_item.Category);
+                        modalWindow.find('#txtEffectiveDate').val(_item.EffectiveDate);
+                        modalWindow.find('#txtDateOfExpiry').val(_item.ExpiryDate);
+                        modalWindow.find('#ddlStatus').val(_item.Status);
+                        modalWindow.find('#txtPurpose').val(_item.Purpose);
+                        modalWindow.find('#txtTypeOther').val(_item.OtherType);
+
+
+                        if (_item.Category == "Others") {
+                            modalWindow.find("#txtTypeOther").parents('.col-md-4').show();
+                        } else {
+                            modalWindow.find("#txtTypeOther").parents('.col-md-4').hide();
+                        }
+
+                    }
+
+                    if (_mode == 'new') {
+
+                        modalWindow.find('#hid_CompanyCredentialsId').val('');
+                        $("#hid_ID").val('');
+                        } else {
+
+                        if (havePremission(Permission.UPLOAD, Module.CompanyCredentials) == false) {
+                            $("#btnAddVariation,#btnAddFolder,#btnAddAttachment").hide();
+                        }
+
+
+                        bindVariation(_item.Id, _mode);
+
+                        bindAttachment(_item.Id, _mode);
+
+
+                        bindActionHistory(_item.Id);
+                        }
+
+                    modalWindow.modal('show');
+
+                });
+
+        } else {
+
+            modalWindow.find('#hid_AgreementId').val("0");
+            modalWindow.modal('show');
+        }
+    }
+
+
+    function bindAttachment(_CompanyCredentialsId, mode) {
+
+if (Number(_CompanyCredentialsId) > 0) {
+
+    // Specify the Id of the Item that you want to fetch
+    $('#tblAttachment>tbody').html('<tr><td colspan="6">No attachment attachted!</td></tr>');
+
+
+    $('#tblAttachment').after(partialLoader);
+
+    var idFilter = "AgreementLookupId eq " + _CompanyCredentialsId;
+
+    var filterQuery = idFilter + "&$select=ID,Title,FileName,Created,AgreementLookup/Id,AgreementLookup/Title,FolderLookup/Id,FolderLookup/Title,Author/Id,Author/Title&$expand=AgreementLookup,FolderLookup,Author";
+
+    GetSPListItems("CompanyCredentialsAttachment", 0, filterQuery)
+        .done(function (data) {
+
+            var response = data.d.results;
+
+            if (response.length > 0) {
+                $('#tblAttachment>tbody').html('');
+            }
+
+            for (var i = 0; i < response.length ; i++) {
+
+                var _item = response[i];
+
+
+                var _FilePreviewOption = "<a  href='#' class='alert-link' onclick='viewDocument(" + _item.Id + ",\"" + _item.FileName + "\");' title='Preview'  ><i class='glyphicon glyphicon-file'></i> " + _item["FileName"] + "</a>";
+
+
+
+                var newRow = "<tr id='" + _item["ID"] + "'>" +
+
+                    "<td>" + (i + 1) + "</td>" +
+                    "<td>" + ((_item["FolderLookup"] && _item["FolderLookup"].Title && _item["FolderLookup"].Title.length > 0) ? "<i class='glyphicon glyphicon-folder-open' style='color:#f0ad4e;margin-right: 8px;'></i> " + _item["FolderLookup"].Title : "") + "</td>" +
+                    "<td>" + _FilePreviewOption + "</td>" +
+                    "<td>" + toDisplayDate(_item["Created"]) + "</td>" +
+                    "<td>" + toDisplayName(_item["Author"].Title) + "</td>";
+
+                var _actionButtonHTML = "";
+                
+
+
+                if (havePremission(Permission.DOWNLOAD, Module.CompanyCredentials, $("#divModal-CompanyCredentialsDetails").find("#ddlCountry").val()) == true) {
+                    _actionButtonHTML = _actionButtonHTML + "<a href='#'  title='Download'  onclick='downloadDocument(" + _item.Id + ")' class='m-5' ><i class='glyphicon glyphicon-download'></i></a>";
+                }
+                if (mode != 'view' && havePremission(Permission.UPLOAD, Module.CompanyCredentials, $("#divModal-CompanyCredentialsDetails").find("#ddlCountry").val()) == true) {
+                    _actionButtonHTML = _actionButtonHTML + "&nbsp;<a href='#'  title='Delete'  onclick='deleteCompanyCredentialsAttachment(" + _item.Id + ")' ><i class='glyphicon glyphicon-trash'></i></a>"
+                }
+                if (mode != 'view' && havePremission(Permission.Share, Module.CompanyCredentials, $("#divModal-CompanyCredentialsDetails").find("#ddlCountry").val()) == true) {
+                    _actionButtonHTML = _actionButtonHTML + "&nbsp;<a id='btnShareIt_" + _item.Id + "' href='#' onclick=\"openShareWindow(" + _item.Id + "," + _item.Id + ",'" + _item["FileName"] + "');\"  title='Share'><i class='glyphicon glyphicon-share'></i></a> ";
+                }
+
+
+
+
+                newRow = newRow + "<td align='center' style='text-align:center;' class='h5'>" + _actionButtonHTML + "</td>";
+                newRow = newRow + "</tr>";
+
+                $('#tblAttachment>tbody').append(newRow);
+
+            }
+
+            $('#tblAttachment' + '').parents().eq(0).find('.partial-loader').remove();
+
+        });
+}
+}
+
+function bindActionHistory(_productId) {
+        // Specify the Id of the Item that you want to fetch
+        $('#tblActionHistory>tbody').html('');
+
+        $('#tblActionHistory').after(partialLoader);
+        if (Number(_productId) > 0) {
+            var filterNomenclature = "AgreementLookupId eq " + _productId + " and Module eq '" + Module.Agreement + "'&$select=ID,Title,ActionName,Comments,Created,Author/Title&$expand=Author&$orderby=Id desc";
+            GetSPListItems("ActionLogs", 0, filterNomenclature)
+                .done(function (data) {
+                    var response = data.d.results;
+                    for (var i = 0; i < response.length ; i++) {
+                        var _item = response[i];
+
+                        var newRow = "<tr id='" + _item["ID"] + "'>" +
+                            "<td>" + toDisplayDateTime(_item["Created"]) + "</td>" +
+                            "<td>" + toDisplayName(_item["Author"].Title) + "</td>" +
+                            "<td>" + _item["ActionName"] + "</td>" +
+                            "<td>" + (_item["Comments"] == null ? "" : _item["Comments"]) + "</td>" +
+                            "</tr>";
+
+                        $('#tblActionHistory>tbody').append(newRow);
+                        $('#divActionLogs').show();
+
+                    }
+
+                    $('#tblActionHistory' + '').parents().eq(0).find('.partial-loader').remove();
+                });
+        }
+    }
+
+    function bindVariation(_CompanyCredentialsId, mode) {
+
+if (Number(_CompanyCredentialsId) > 0) {
+
+    // Specify the Id of the Item that you want to fetch
+    $('#tblVariation>tbody').html('<tr><td colspan="4">No variation attachted!</td></tr>');
+
+    $('#tblVariation').after(partialLoader);
+
+    var idFilter = "AgreementLookupId eq " + _CompanyCredentialsId;
+
+
+    var filterQuery = idFilter + "&$select=ID,Title,AgreementLookup/Id,AgreementLookup/Title,Author/Id,Author/Title&$expand=AgreementLookup,Author";
+
+    GetSPListItems("CompanyCredentialsVariation", 0, filterQuery)
+        .done(function (data) {
+
+            var response = data.d.results;
+
+            if (response.length > 0) {
+                $('#tblVariation>tbody').html('');
+            }
+
+            for (var i = 0; i < response.length ; i++) {
+
+                var _item = response[i];
+
+                var newRow = "<tr id='" + _item["ID"] + "'>" +
+
+                    "<td>" + (i + 1) + "</td>" +
+                    "<td>" + _item.Title + "</td>" +
+                    "<td><ol style='padding-left: 12px;'>"  + "</ol></td>";
+                    //"<td>" + toDisplayDate(_item["Created"]) + "</td>";
+
+                var _actionButtonHTML = "";
+
+
+                if (mode != 'view' && havePremission(Permission.UPLOAD, Module.CompanyCredentials, $("#divModal-CompanyCredentialsDetails").find("#ddlCountry").val()) == true) {
+
+                    _actionButtonHTML += "<a href='#'  title='Delete'  onclick='deleteVariation(" + _item.Id + ")' ><i class='glyphicon glyphicon-trash'></i></a>";
+                    _actionButtonHTML += "&nbsp;<a id='btnVariation_" + _item.Id + "' href='#' onclick=\"openEditVariationSPDailogBox(" + _item.Id + ",'edit');\"  title='Edit'><i class='glyphicon glyphicon-edit'></i></a> ";
+
+                }
+
+
+                newRow = newRow + "<td align='center' style='text-align:center;' class='h5'>" + _actionButtonHTML + "</td>";
+                newRow = newRow + "</tr>";
+
+                $('#tblVariation>tbody').append(newRow);
+
+
+                bindAttachmentsInItem("CompanyCredentialsVariation", _item.Id);
+
+            }
+
+            $('#tblVariation' + '').parents().eq(0).find('.partial-loader').remove();
+
+        });
+}
+}
+
+
+
+function openEditVariationSPDailogBox(_id, _mode) {
+        var queryString = _mode.length > 0 ? ("pagemode=" + _mode) : "";
+        var title = "Edit Variation";
+        var sucMsg = "Variation has been edit successfully.";
+        
+
+        openEditItemDialog('CompanyCredentialsVariation', _id, title, queryString, sucMsg, false, _dialogReturnValueCallback);
+
+
+        setTimeout(function () { spdailogpositionsetter() }, 1000);
+    }
+
+    function openVariationSPDailogBox(_thisButton) {
+        var _CompanyCredentialsId = $("#divModal-Agreement").find('#hid_AgreementId').val();
+        var queryString = "ccid=" + _CompanyCredentialsId;
+        var source = window.location.href;
+        var sucMsg = "New Variation has been added successfully.";
+
+        openNewItemDialog('CompanyCredentialsVariation', 'Add Variation', source, queryString, sucMsg, 650, false, _dialogReturnValueCallback);
+
+        setTimeout(function () { spdailogpositionsetter() }, 1000);
+
+    }
+    function _dialogReturnValueCallback(dialogResult, returnValue) {
+        if (dialogResult == 1) {
+            //if ((typeof (_dialogReturnValueCallback) == "function")) { _dialogReturnValueCallback(); _dialogReturnValueCallback = null; }
+
+            var _CompanyCredentialsId = $("#divModal-Agreement").find('#hid_AgreementId').val();
+            bindVariation(_CompanyCredentialsId, 'Edit')
+        }
+    }
+
+function deleteVariation(_recordID) {
+
+var _confirmResult = confirm("Are you sure you want to delete this attachment?");
+if (_confirmResult == true) {
+
+    GetSPListItems("CompanyCredentialsVariation", _recordID, '').done(function (data) {
+
+        if (data && data.d) {
+            deleteItem("CompanyCredentialsVariation", data.d).done(function (data) {
+                alert('Attachment has been deleted successfully');
+
+
+                var _recordId = $("#divModal-CompanyCredentialsDetails").find('#hid_ID').val();
+
+                bindVariation(_recordId, 'Edit');
+
+                RequestEnded();
+            });
+        }
+
+    }).fail(function (jqXHR, textStatus) {
+
+        alert("Company Variation Deleting Fail! \n\nDetails\n" + jqXHR.responseJSON.error.message.value);
+        RequestEnded();
+    });
+}
+
+}
+
+
+
+    function bindAgreementCompanyDDLs() {
+
+        $("#ddlAgreementCompany,#ddlAgreementCompany-filter").find('option').remove();
+        $("#ddlAgreementCompany").append("<option value=''> -- None -- </option>");
+        $("#ddlAgreementCompany-filter").append("<option value=''>All</option>");
+        
+
+        var isActiveFilter = ""; //"IsActive eq '1'";
+
+        GetSPListItems("Companies", 0, isActiveFilter)
+            .done(function (data) {
+                try {
+
+                    if (data && data.d && data.d.results.length > 0) {
+                        for (var _u = 0 ; _u < data.d.results.length; _u++) {
+                            var _thisUserItem = data.d.results[_u];
+                            var newOPtion = "<option value='" + _thisUserItem.Id + "'>" + _thisUserItem.Title + "</option>";
+                            $("#ddlAgreementCompany").append(newOPtion);
+                            $("#ddlAgreementCompany-filter").append("<option value='" + _thisUserItem.Title + "'>" + _thisUserItem.Title + "</option>");
+                        }
+                    }
+
+                } catch (ex) { console.log(ex); }
+            });
+
+
+    }
+
+
+
+
+    function onSelectAgreementCategory() {
+
+        var modalWindow = $("#divModal-Agreement");
+
+        if (modalWindow.find('#ddlCategory').val() == "Others") {
+            modalWindow.find("#txtTypeOther").parents('.col-md-4').show();
+        } else {
+            modalWindow.find("#txtTypeOther").parents('.col-md-4').hide();
+        }
+    }
+
+
+    function SearchCol(_index) {
+        var tableSelector = '#tblAgreement';
+        var table = $(tableSelector);
+        var datatable = $(tableSelector).DataTable();
+
+        table.find('th input,th select').each(function () {
+            var index = $(this).parents('th').data("column");
+            var searchByValue = $(this).val();
+            var isExpression = false;
+
+            if (index > -1) {
+                datatable.column(index).search(searchByValue);
+            }
+        });
+
+        datatable.draw();
+    }
+
+</script>
+
+<script type="text/javascript">
+
+    function saveAgreement(_action) {
+
+        var isValid = true;
+
+        var modalWindow = $("#divModal-Agreement");
+
+
+        modalWindow.find('.is-invalid').removeClass("is-invalid");
+
+        if ((modalWindow.find("#ddlAgreementCompany").val().length > 0) == false) {
+            isValid = false;
+            modalWindow.find("#ddlAgreementCompany").addClass("is-invalid");
+        }
+        if ((modalWindow.find("#txtBusinessPartner").val().length > 0) == false) {
+            isValid = false;
+            modalWindow.find("#txtBusinessPartner").addClass("is-invalid");
+        }
+
+        if ((modalWindow.find("#ddlAgreementType").val().length > 0) == false) {
+            isValid = false;
+            modalWindow.find("#ddlAgreementType").addClass("is-invalid");
+        }
+
+        if ((modalWindow.find("#ddlCategory").val().length > 0) == false) {
+            isValid = false;
+            modalWindow.find("#ddlCategory").addClass("is-invalid");
+        } else if (modalWindow.find("#ddlCategory").val() == 'Others') {
+
+            if ((modalWindow.find("#txtTypeOther").val().length > 0) == false) {
+                isValid = false;
+                modalWindow.find("#txtTypeOther").addClass("is-invalid");
+            }
+        }
+
+        if ((modalWindow.find("#txtEffectiveDate").val().length > 0) == false) {
+            isValid = false;
+            modalWindow.find("#txtEffectiveDate").addClass("is-invalid");
+        }
+
+        if ((modalWindow.find("#txtDateOfExpiry").val().length > 0) == false) {
+            isValid = false;
+            modalWindow.find("#txtDateOfExpiry").addClass("is-invalid");
+        }
+        if ((modalWindow.find("#ddlStatus").val().length > 0) == false) {
+            isValid = false;
+            modalWindow.find("#ddlStatus").addClass("is-invalid");
+        }
+
+
+
+
+        if (isValid == true) {
+
+            //RequestStarted();
+
+            var _recordID = $("#hid_AgreementId").val();
+
+
+            var jsonData = {
+                CompanyLookupId: modalWindow.find('#ddlAgreementCompany').val(),
+                BusinessPartner: modalWindow.find('#txtBusinessPartner').val(),
+                AgreementType: modalWindow.find('#ddlAgreementType').val(),
+                Category: modalWindow.find('#ddlCategory').val(),
+                EffectiveDate: modalWindow.find('#txtEffectiveDate').val(),
+                ExpiryDate: modalWindow.find('#txtDateOfExpiry').val(),
+                Status: modalWindow.find('#ddlStatus').val(),
+                Purpose: modalWindow.find('#txtPurpose').val(),
+                OtherType: modalWindow.find('#txtTypeOther').val()
+            }
+
+
+
+            if (Number(_recordID) > 0) {
+
+                UpdateSPList("Agreements", _recordID, jsonData).done(function (data) {
+
+                    saveActionLog(_recordID, "Edit", jsonData.Status, Module.Agreement);
+                    sendNotification();
+
+                    alert('Agreement has been edit successfully');
+                    // Retrive Nomenclatures newly Added
+
+                    bindAgreementTable();
+
+                    $("#divModal-Agreement").modal('hide');
+
+                    RequestEnded();
+
+                }).fail(function (jqXHR, textStatus) {
+
+                    alert("Agreement Saving Fail! \n\nDetails\n" + jqXHR.responseJSON.error.message.value);
+                    RequestEnded();
+                });
+
+            }
+            else {
+
+                InsertIntoSPList('Agreements', jsonData).done(function (data) {
+                    //console.log(data.d.results);
+                    if (Number(data.d.ID) > 0) {
+
+                        saveActionLog(data.d.ID, "Created", data.d.Status, Module.Agreement);
+
+                        openAgreement(data.d.ID, "edit");
+                        alert('Agreement has been added successfully');
+
+                        bindAgreementTable();
+
+                        //$("#divModal-Agreement").modal('hide');
+
+                        RequestEnded();
+                    }
+
+                }).fail(function (jqXHR, textStatus) {
+
+                    alert("Agreement Saving Fail! \n\nDetails\n" + jqXHR.responseJSON.error.message.value);
+                    RequestEnded();
+                });
+            }
+
+        }
+        else {
+            alert("Please fill highlighted fields first!");
+        }
+    }
+
+
+    function deleteAgreement(_recordID) {
+
+        var _confirmResult = confirm("Are you sure you want to delete this Agreement?");
+        if (_confirmResult == true) {
+
+            GetSPListItems("Agreements", _recordID, '').done(function (data) {
+
+                if (data && data.d) {
+                    deleteItem("Agreements", data.d).done(function (data) {
+                        alert('Agreement has been deleted successfully');
+
+                        //var _hid_ProductId = $("#divModal-Agreement").find('#hid_AgreementId').val();
+                        bindAgreementTable();
+
+                        RequestEnded();
+                    });
+                }
+
+            }).fail(function (jqXHR, textStatus) {
+
+                alert("Agreement Deleting Fail! \n\nDetails\n" + jqXHR.responseJSON.error.message.value);
+                RequestEnded();
+            });
+        }
+
+    }
+
+// save attachment start
+
+
+    // start
+    function saveAttachment() {
+
+var docidall = "0;";
+// Define the folder path for this example.
+var serverRelativeUrlToFolder = 'CompanyCredentialsAttachment';
+
+// Get test values from the file input and text input page controls.
+var fileInput = jQuery('#fileAttachedFiles');
+var fileCount = fileInput[0].files.length;
+// Get the server URL.
+var serverUrl = _spPageContextInfo.webAbsoluteUrl;
+var filesUploaded = 0;
+
+var _CompanyCredentialsId = $("#divModal-Agreement").find('#hid_AgreementId').val();
+
+if (isPDFFiles()) {
+
+    //RequestStarted();
+    showLoader();
+
+    setTimeout(function () {
+        $("#custom-loader").css("z-index", "2002");
+    }, 100);
+
+    for (var i = 0; i < fileCount; i++) {
+        // Initiate method calls using jQuery promises.
+        // Get the local file as an array buffer.
+        var getFile = getFileBuffer(i);
+        getFile.done(function (arrayBuffer, i) {
+
+            // Add the file to the SharePoint folder.
+            var addFile = addFileToFolder(arrayBuffer, i);
+            addFile.done(function (data, status, xhr) {
+                //$("#msg").append("<div>File : "+file.d.Name+" ... uploaded sucessfully</div>");
+                filesUploaded++;
+                var file = data.d;
+                // register/post register
+                var _FolderId = $('#ddlFolders').val();
+                var updateObject = {
+                    __metadata: {
+                        type: file.ListItemAllFields.__metadata.type
+                    },
+                    AgreementLookupId: _CompanyCredentialsId,
+                    FileName: fileInput[0].files[i].name
+                };
+
+                if (_FolderId > 0)
+                updateObject.FolderLookupId = _FolderId;
+
+                var url = serverUrl + "/_api/Web/lists/getbytitle('" + serverRelativeUrlToFolder + "')/items(" + file.ListItemAllFields.Id + ")";
+                docidall += file.ListItemAllFields.Id + ";";
+                updateFileMetadata(url, updateObject, file, function (result) {
+                    //alert("File metadata updation done successfully");
+                }, function (result) {
+                    //alert("File upload done but metadata updating FAILED");
+                });
+                if (fileCount == filesUploaded) {
+
+                    bindAttachment(_CompanyCredentialsId);
+                    //RequestEnded();
+                    hideLoader();
+                    alert("All files uploaded successfully.");
+                    $('#divModal-CompanyCredentialsAttachment').modal('hide');
+                    $('#ddlFolders').val('');
+                    $("#fileAttachedFiles").val("");
+
+                  
+
+                    filesUploaded = 0;
+                }
+            });
+            addFile.fail(onError);
+        });
+        getFile.fail(onError);
+    }
+}
+
+function isPDFFiles() {
+    var flag = true;
+    var files = fileInput[0].files;
+    var maxsize = 2 * 1024 * 1024 * 1024;//2GB
+    for (var i = 0; i < files.length; i++) {
+        // validate extension
+        //if (files[i].name.split(".")[1].toLowerCase() != "pdf") {
+        //    flag = false;
+        //    alert("Please update PDF files.");
+        //    break;
+        //}
+        if (files[i].name.substr(-3).toLowerCase() != "pdf") {
+            flag = false;
+            alert("Please update PDF files.");
+            break;
+        }
+
+        // validate file size
+        if (files[i].size > maxsize) {
+            flag = false;
+            alert("File size must be under 2GB.");
+            break;
+
+        }
+    }
+    return flag;
+}
+//update file metadata
+function updateFileMetadata(apiUrl, updateObject, file, success, failure) {
+    $.ajax({
+        url: apiUrl,
+        type: "POST",
+        async: false,
+        data: JSON.stringify(updateObject),
+        headers: {
+            "accept": "application/json;odata=verbose",
+            "X-RequestDigest": $("#__REQUESTDIGEST").val(),
+            "Content-Type": "application/json;odata=verbose",
+            "X-Http-Method": "MERGE",
+            "IF-MATCH": file.ListItemAllFields.__metadata.etag,
+        },
+        success: function (data) {
+            success(data);
+        },
+        error: function (data) {
+            failure(data);
+        }
+    });
+}
+// Get the local file as an array buffer.
+function getFileBuffer(i) {
+    var deferred = jQuery.Deferred();
+    var reader = new FileReader();
+    reader.onloadend = function (e) {
+        deferred.resolve(e.target.result, i);
+    }
+    reader.onerror = function (e) {
+        deferred.reject(e.target.error);
+    }
+    reader.readAsArrayBuffer(fileInput[0].files[i]);
+    return deferred.promise();
+}
+
+// Add the file to the file collection in the Shared Documents folder.
+function addFileToFolder(arrayBuffer, i) {
+    var index = i;
+
+    // Get the file name from the file input control on the page.
+    //   var fileName = fileInput[0].files[index].name;
+
+    var today = new Date();
+    var cHour = today.getHours();
+    var cMin = today.getMinutes();
+    var cSec = today.getSeconds();
+    //  var fileName = fileInput[0].val().split('.').pop();
+
+    // var fileName = fileInput[0].files[index].name.split('.');
+    var filenameLength = fileInput[0].files[index].name.length;
+    var fileName = fileInput[0].files[index].name.substr(0, filenameLength - 4);
+
+    fileName = fileName + "-" + cHour + "-" + cMin + "-" + cSec + ".pdf";
+
+
+    // Construct the endpoint.
+    var fileCollectionEndpoint = String.format(
+        "{0}/_api/web/getfolderbyserverrelativeurl('{1}')/files" +
+        "/add(overwrite=true, url='{2}')?$expand=ListItemAllFields",
+        serverUrl, serverRelativeUrlToFolder, fileName);
+
+    // Send the request and return the response.
+    // This call returns the SharePoint file.
+    return jQuery.ajax({
+        url: fileCollectionEndpoint,
+        type: "POST",
+        data: arrayBuffer,
+        processData: false,
+        headers: {
+            "accept": "application/json;odata=verbose",
+            "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+            "content-length": arrayBuffer.byteLength
+        },
+        xhr: function () {
+            var xhr = new window.XMLHttpRequest();
+
+            xhr.upload.addEventListener("progress", function (_evt) { fileuploaderprogresser(_evt, "li-file-" + index); }, false);
+
+            return xhr;
+        }
+    });
+}
+
+}
+// Display error messages.
+function onError(error) {
+alert('File Uploading Fail! Try again after refreshing page.\n\nError Text:\n\n' + error.responseText);
+//RequestEnded();
+hideLoader();
+}
+
+
+
+function fileAttachedFiles_onChange(_fileUploader) {
+var _htmlSelectFiles = "";
+
+if (_fileUploader.files.length > 0) {
+    for (var fi = 0 ; fi < _fileUploader.files.length; fi++) {
+        var fileName = _fileUploader.files[fi].name;
+        var displayfileName = fileName.length > 40 ? fileName.substring(0, 25) + '...' + fileName.substring(fileName.length - 15) : fileName;
+        var fileSize = _fileUploader.files[fi].size / 1024;
+
+        if (fileSize > 1023)
+            fileSize = (fileSize / 1024).toFixed(2) + " MB";
+        else
+            fileSize = fileSize.toFixed(2) + " KB";
+
+        displayfileName = displayfileName + " (" + fileSize + ")";
+
+        var htmlProgressBar = "<div class='progress no-margin'>" +
+              "  <div class='progress-bar progress-bar-warning progress-bar-striped' role='progressbar' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100' style='width: 0%'>" +
+              "    <span class='sr-only'>" + 0 + "% Complete (Still uploading)</span>" +
+              "  </div>" +
+              " <span style='padding-left: 6px;position: absolute;left: 30px;color: darkred;'>" + displayfileName + "<span class='span-info small' style='padding-left: 10px;'></span></span>" +
+              "</div>";
+
+
+        _htmlSelectFiles = _htmlSelectFiles + "<li id='li-file-" + fi + "' style='margin-bottom: 6px;'> " + htmlProgressBar + "</li>";
+        //_htmlSelectFiles = _htmlSelectFiles + "<li id='" + fileName + "' > " + displayfileName + " (" + fileSize + ") <div class='progessbarhere'></div></li>";
+
+
+
+    }
+}
+
+$("#olSelectFiles").html(_htmlSelectFiles);
+}
+
+function fileuploaderprogresser(evt, _uploadingFileId) {
+var testTisObj = this;
+
+if (evt.lengthComputable) {
+    var percentComplete = evt.loaded / evt.total;
+    percentComplete = parseInt(percentComplete * 100);
+    //var $link = $('.' + ids);
+    //var $img = $link.find('i');
+    //$link.html('Uploading..(' + percentComplete + '%)');
+    //$link.append($img);
+
+    //var _progressBar = $("#olSelectFiles").find("#progessbarhere").find(".progress-bar");
+    var _progressBar = $("#olSelectFiles").find("#" + _uploadingFileId).find(".progress-bar");
+    if (_progressBar.length == 0) {
+        var htmlProgressBar = "<div class='progress no-margin'>" +
+        "  <div class='progress-bar progress-bar-warning progress-bar-striped' role='progressbar' aria-valuenow='" + percentComplete + "' aria-valuemin='0' aria-valuemax='100' style='width: " + percentComplete + "%'>" +
+        "    <span class='sr-only'>" + percentComplete + "% Complete (Still uploading)</span>" +
+        "  </div>" +
+        "</div>";
+
+        //$("#olSelectFiles").find(".progessbarhere").html(htmlProgressBar);
+        $("#olSelectFiles").find("#" + _uploadingFileId).html(htmlProgressBar);
+    }
+    else {
+        _progressBar.css("width", percentComplete + '%');
+        if (percentComplete < 100) {
+            _progressBar.find(".sr-only").text("" + percentComplete + "% Complete (Still uploading)");
+
+            var fileSize = evt.loaded / 1024;
+
+            if (fileSize > 1023)
+                fileSize = (fileSize / 1024).toFixed(3) + " MB uploaded";
+            else
+                fileSize = fileSize.toFixed(3) + " KB uploaded";
+
+
+            $("#" + _uploadingFileId).find('.span-info').text(fileSize);
+
+        }
+        else {
+            _progressBar.find(".sr-only").text("" + percentComplete + "% Uploaded");
+            _progressBar.addClass("progress-bar-success").removeClass("progress-bar-warning");
+            $("#" + _uploadingFileId).find('span').css("color", "white");
+            $("#" + _uploadingFileId).find('.span-info').text('');
+        }
+    }
+
+}
+}
+
+
+
+function deleteCompanyCredentialsAttachment(_recordID) {
+
+var _confirmResult = confirm("Are you sure you want to delete this attachment?");
+if (_confirmResult == true) {
+
+    GetSPListItems("CompanyCredentialsAttachment", _recordID, '').done(function (data) {
+
+        if (data && data.d) {
+            deleteItem("CompanyCredentialsAttachment", data.d).done(function (data) {
+                alert('Attachment has been deleted successfully');
+
+
+                var _recordId = $("#divModal-Agreement").find('#hid_AgreementId').val();
+
+                bindAttachment(_recordId, 'Edit');
+
+                RequestEnded();
+            });
+        }
+
+    }).fail(function (jqXHR, textStatus) {
+
+        alert("CompanyCredentials Deleting Fail! \n\nDetails\n" + jqXHR.responseJSON.error.message.value);
+        RequestEnded();
+    });
+}
+
+}
+
+
+
+function downloadDocument(_fileId) {
+
+var listName = 'CompanyCredentialsAttachment';
+var apiURL = _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('" + listName + "')/items/GetById(" + _fileId + ")/file"
+
+$.ajax({
+    url: apiURL,
+    type: "GET",
+    async: false,
+    headers: {
+        "Accept": "application/json; odata=verbose",
+    },
+    success: function (dataFileInfo) {
+
+        if (dataFileInfo.d) {
+
+            var fileURL = location.origin + dataFileInfo.d.ServerRelativeUrl;
+            downloadFunction(fileURL);
+        }
+
+    },
+    error: function (error) {
+        console.log("Error on getting file info", error);
+
+        RequestEnded();
+    }
+});
+}
+
+
+function downloadFunction(url) {
+var file_path = url;
+var a = document.createElement('A');
+a.href = file_path;
+a.download = file_path.substr(file_path.lastIndexOf('/') + 1);
+document.body.appendChild(a);
+a.click();
+document.body.removeChild(a);
+
+}
+
+
+
+</script>
